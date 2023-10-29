@@ -1,10 +1,11 @@
 {
 	"info": {
-		"_postman_id": "1ca5291b-05bc-4a7f-9bc5-13e699641cfb",
-		"name": "The Cat API",
-		"description": "![image](https://cdn2.thecatapi.com/logos/thecatapi_256xW.png)\n\n## An open, free, read & write API all about Cats\nThe Cat API gives you access to 10000's of cat images\n- Upload your own images\n- Favourite or Vote on images\n- Get stats on your requests\n- Save a custom value with each request for each of your users\n\n## How is this free?\nMy goal is to create free, fun & useful public service API's, helping people learn to code, create awesome projects, and be a stable fixture in a turbulent world.\n\n## How do i get access?\nJust signup for an API Key from https://theCatAPI.com for free. I'm looking forward to seeing what you make!",
+		"_postman_id": "b3cd4c25-d081-4b64-bcad-b696be80c800",
+		"name": "Cat / Dog API",
+		"description": "![image](https://s3-us-west-2.amazonaws.com/tdapi-live/static/tie-square-135.png)\n\n## An open, free, read & write API all about Dogs\nThe Dog API gives you access to 1000's of dog images, and breeds.\n- Upload your own images\n- Detailed info on Dog Breeds\n- Favourite or Vote on images\n- Get stats on your requests\n- Save a custom value with each request\n\n## How is this free?\nOur goal is to create free, fun & useful public service API's, helping people learn to code, create awesome projects, and be a stable fixture in a turbulent world.\n\n## How do i get access?\nJust signup for an API Key from https://thedogapi.com for free. We're looking forward to seeing what you build!",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5578104"
+		"_exporter_id": "5578104",
+		"_collection_link": "https://thatapicompany.postman.co/workspace/ThatAPICompany-(General)~7c63f557-fffb-42c9-8ef4-c5056cc801d9/collection/5578104-b3cd4c25-d081-4b64-bcad-b696be80c800?action=share&source=collection_link&creator=5578104"
 	},
 	"item": [
 		{
@@ -23,12 +24,8 @@
 									"",
 									"pm.test(\"response should be okay to process\", function () { ",
 									"    pm.response.to.not.be.error; ",
+									"    pm.response.to.have.jsonBody(\"\"); ",
 									"    pm.response.to.not.have.jsonBody(\"error\"); ",
-									"});",
-									"",
-									"pm.test('10 images', function() {",
-									"  var jsonData = pm.response.json();",
-									"  pm.expect(jsonData.length).to.equal(10); ",
 									"});",
 									""
 								],
@@ -53,7 +50,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{endpoint}}v1/images/search?breed_ids=beng&include_breeds=true",
+							"raw": "{{endpoint}}v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=1",
 							"host": [
 								"{{endpoint}}v1"
 							],
@@ -64,227 +61,56 @@
 							"query": [
 								{
 									"key": "size",
-									"value": "full",
-									"description": "[optional] thumb , small, med or full - small is perfect for Discord",
-									"disabled": true
+									"value": "med",
+									"description": "[optional] thumb , small, med or full - small is perfect for Discord"
 								},
 								{
 									"key": "mime_types",
-									"value": "jpg,png,gif",
-									"description": "[optional] a comma separated strig of types to return e.g. jpg,png for static, or gif for gifs",
-									"disabled": true
+									"value": "jpg",
+									"description": "[optional] a comma separated strig of types to return e.g. jpg,png for static, or gif for gifs"
 								},
 								{
 									"key": "format",
 									"value": "json",
-									"description": "[optional] json | src",
-									"disabled": true
-								},
-								{
-									"key": "order",
-									"value": "RANDOM",
-									"description": "[optional] default:RANDOM - RANDOM | ASC | DESC",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "0",
-									"description": "[optional] paginate through results",
-									"disabled": true
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "[optional] number of results to return, up to 25 with a valid API-Key",
-									"disabled": true
-								},
-								{
-									"key": "category_ids",
-									"value": null,
-									"description": "[optional] category ids from /categories route",
-									"disabled": true
-								},
-								{
-									"key": "breed_ids",
-									"value": "beng",
-									"description": "[optional] breed ids from /breeds route"
+									"description": "[optional] json | src"
 								},
 								{
 									"key": "has_breeds",
 									"value": "true",
-									"description": "[optional] true/false - only return images that have at least 1 breed",
-									"disabled": true
+									"description": "[optional] - only return images with breed data"
+								},
+								{
+									"key": "order",
+									"value": "RANDOM",
+									"description": "[optional] default:RANDOM - RANDOM | ASC | DESC"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "[optional] paginate through results"
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"description": "[optional] number of results to return, up to 25 with a valid API-Key"
 								},
 								{
 									"key": "include_breeds",
-									"value": "true",
-									"description": "[optional] true/false - Include the 'breeds' array - default true"
+									"value": "1",
+									"description": "[optional] default to true. Adds the 'breed' object ot the image, only if an api",
+									"disabled": true
 								},
 								{
 									"key": "include_categories",
-									"value": "true",
-									"description": "[optional] true/false - Include the 'categories' array - default true",
+									"value": "1",
+									"description": "[optional] default to true. Adds the 'breed' object ot the image, only if an api",
 									"disabled": true
 								}
 							]
 						},
-						"description": "#### Route\n\nhttps://api.thecatapi.com/v1/images/search\n\nSearch & Itterate through all approved images.\n\n\n#### Query Parameters\n\n| Key  | Required | Description                                                                                     |\n|------|----------|-------------------------------------------------------------------------------------------------|\n| size | optional | The size of image to return - `small`, `med` or `full`. `small` is perfect for Discord. Defaults to `med`\n| mime_types | optional | Comma delimited string of the image types to return `gif`, `jpg`, or`png`. Defaults to return all types `jpg,gif,png`.                                                    |\n| format | optional | Response format `json`, or`src`. `src` will redirect straight to the image, so is useful for putting a link straight into HTML as the 'src' on an 'img' tag. Defaults to `json`                            |\n| order | optional | The order to return results in. `RANDOM`, `ASC` or `DESC`. If either `ASC` or `DESC` is passed then the Pagination headers will be on the response allowing you to see the total amount of results, and your current page. Default is `RANDOM`                      |\n| page | optional | Integer - used for Paginating through all the results. Only used when order is `ASC` or `DESC`                      |\n| limit | optional | Integer - number of results to return. Without an API Key you can only pass `1`, with a Key you can pass up to `25`. Default is `1`                      |\n| category_ids | optional | Comma delimited string of integers, matching the `id`'s of the Categories to filter the search. These categories can found in the `/v1/categories` request. e.g. category_ids=2                      |\n| breed_ids | optional | Comma delimited string of integers, matching the `id`'s of the Breeds to filter the search. These categories can found in the `/v1/breeds` request                      |\n| has_breeds | optional | Only return images which have breed data attached. Integer - `0` or `1`. Default is `0`                        |\n\n#### Pagination\nIf order=ASC or order=DESC is passed, then the response will contain these values as Headers\n\n| Key  | Description                                                                                     |\n|------|-------------------------------------------------------------------------------------------------|\n| Pagination-Count | Integer - the total amount of results matching your search|\n| Pagination-Page  | Integer - the current page\n| Pagination-Limit | Integer - amount of results being returned per page\n|"
+						"description": "Searchs all approved images. Default is to reutrn RANDOM images, but with an API-Key you can use 'order=DESC' or 'order=ASC' along with the 'page' and 'limit' parameters to paginate through them in the order they were approved.\n\nPagination-Count, Pagination-Page, and Pagination-Limit headers are present in the response so you know the total number of images that can be paginated through for the passed search filters."
 					},
 					"response": [
-						{
-							"name": "/images/search - 10 random images",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[optional] without it only the a basic set of images can be searched"
-									}
-								],
-								"url": {
-									"raw": "{{endpoint}}v1/images/search?format=json&limit=10",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"images",
-										"search"
-									],
-									"query": [
-										{
-											"key": "size",
-											"value": "full",
-											"description": "[optional] thumb , small, med or full - small is perfect for Discord",
-											"disabled": true
-										},
-										{
-											"key": "mime_types",
-											"value": "jpg,png,gif",
-											"description": "[optional] a comma separated strig of types to return e.g. jpg,png for static, or gif for gifs",
-											"disabled": true
-										},
-										{
-											"key": "format",
-											"value": "json",
-											"description": "[optional] json | src"
-										},
-										{
-											"key": "order",
-											"value": "RANDOM",
-											"description": "[optional] default:RANDOM - RANDOM | ASC | DESC",
-											"disabled": true
-										},
-										{
-											"key": "page",
-											"value": "0",
-											"description": "[optional] paginate through results",
-											"disabled": true
-										},
-										{
-											"key": "limit",
-											"value": "10",
-											"description": "[optional] number of results to return, up to 25 with a valid API-Key"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sat, 03 Nov 2018 05:47:06 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Expires",
-									"value": "Tue, 03 Jul 2001 06:00:00 GMT"
-								},
-								{
-									"key": "Last-Modified",
-									"value": "Sat Nov 03 2018 05:47:06 GMT+0000 (UTC)"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "post-check=0, pre-check=0"
-								},
-								{
-									"key": "Pagination-Count",
-									"value": "20713"
-								},
-								{
-									"key": "Pagination-Page",
-									"value": "0"
-								},
-								{
-									"key": "Pagination-Limit",
-									"value": "10"
-								},
-								{
-									"key": "Access-Control-Expose-Headers",
-									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "68ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"e3c\",\n        \"url\": \"https://25.media.tumblr.com/tumblr_m1yuqjfdy31qejbiro1_500.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"2kj\",\n        \"url\": \"https://25.media.tumblr.com/tumblr_m2frwgKzN01r6b7kmo1_500.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"MTYzMjIxMA\",\n        \"url\": \"https://25.media.tumblr.com/tumblr_maklk6AJiw1qhwmnpo1_400.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"ckk\",\n        \"url\": \"https://cdn2.thecatapi.com/images/ckk.gif\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"ea7\",\n        \"url\": \"https://25.media.tumblr.com/tumblr_m4qyhzpZts1qcxyrro1_500.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"4m5\",\n        \"url\": \"https://25.media.tumblr.com/tumblr_m44w9nI50Y1qzyqubo1_500.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"fb\",\n        \"url\": \"https://25.media.tumblr.com/tumblr_luihyxjWY51qzqffro1_500.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"MTg5NzY0OQ\",\n        \"url\": \"https://24.media.tumblr.com/tumblr_m87t24YOrf1qze0hyo1_500.jpg\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"bmf\",\n        \"url\": \"https://24.media.tumblr.com/tumblr_ltq345HHij1qh9eixo1_500.png\"\n    },\n    {\n        \"breeds\": [],\n        \"categories\": [],\n        \"id\": \"88n\",\n        \"url\": \"https://cdn2.thecatapi.com/images/88n.gif\"\n    }\n]"
-						},
 						{
 							"name": "/images/search",
 							"originalRequest": {
@@ -301,7 +127,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{endpoint}}v1/images/search?format=json",
+									"raw": "{{endpoint}}v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=1",
 									"host": [
 										"{{endpoint}}v1"
 									],
@@ -313,14 +139,12 @@
 										{
 											"key": "size",
 											"value": "med",
-											"description": "[optional] thumb , small, med or full - small is perfect for Discord",
-											"disabled": true
+											"description": "[optional] thumb , small, med or full - small is perfect for Discord"
 										},
 										{
 											"key": "mime_types",
 											"value": "jpg",
-											"description": "[optional] a comma separated strig of types to return e.g. jpg,png for static, or gif for gifs",
-											"disabled": true
+											"description": "[optional] a comma separated strig of types to return e.g. jpg,png for static, or gif for gifs"
 										},
 										{
 											"key": "format",
@@ -329,41 +153,31 @@
 										},
 										{
 											"key": "has_breeds",
-											"value": "false",
-											"description": "[optional] - only return images with breed data",
-											"disabled": true
+											"value": "true",
+											"description": "[optional] - only return images with breed data"
 										},
 										{
 											"key": "order",
 											"value": "RANDOM",
-											"description": "[optional] default:RANDOM - RANDOM | ASC | DESC",
-											"disabled": true
+											"description": "[optional] default:RANDOM - RANDOM | ASC | DESC"
 										},
 										{
 											"key": "page",
 											"value": "0",
-											"description": "[optional] paginate through results",
-											"disabled": true
+											"description": "[optional] paginate through results"
 										},
 										{
 											"key": "limit",
 											"value": "1",
-											"description": "[optional] number of results to return, up to 25 with a valid API-Key",
-											"disabled": true
+											"description": "[optional] number of results to return, up to 25 with a valid API-Key"
 										}
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Unauthorized",
+							"code": 401,
 							"_postman_previewlanguage": "json",
 							"header": [
-								{
-									"key": "Cache-Control",
-									"value": "post-check=0, pre-check=0",
-									"name": "Cache-Control",
-									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
-								},
 								{
 									"key": "Connection",
 									"value": "keep-alive",
@@ -371,10 +185,10 @@
 									"description": "Options that are desired for the connection"
 								},
 								{
-									"key": "Content-Encoding",
-									"value": "gzip",
-									"name": "Content-Encoding",
-									"description": "The type of encoding used on the data."
+									"key": "Content-Length",
+									"value": "141",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
 								},
 								{
 									"key": "Content-Type",
@@ -384,25 +198,13 @@
 								},
 								{
 									"key": "Date",
-									"value": "Sun, 26 Aug 2018 06:36:16 GMT",
+									"value": "Sun, 19 Aug 2018 12:40:57 GMT",
 									"name": "Date",
 									"description": "The date and time that the message was sent"
 								},
 								{
-									"key": "Expires",
-									"value": "Tue, 03 Jul 2001 06:00:00 GMT",
-									"name": "Expires",
-									"description": "Gives the date/time after which the response is considered stale"
-								},
-								{
-									"key": "Last-Modified",
-									"value": "Sun Aug 26 2018 06:36:16 GMT+0000 (UTC)",
-									"name": "Last-Modified",
-									"description": "The last modified date for the requested object, in RFC 2822 format"
-								},
-								{
 									"key": "Server",
-									"value": "nginx/1.12.1",
+									"value": "Apache/2.4.33 (Amazon)",
 									"name": "Server",
 									"description": "A name for the server"
 								},
@@ -411,12 +213,6 @@
 									"value": "max-age=15552000; includeSubDomains",
 									"name": "Strict-Transport-Security",
 									"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked",
-									"name": "Transfer-Encoding",
-									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
 								},
 								{
 									"key": "Vary",
@@ -449,12 +245,6 @@
 									"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
 								},
 								{
-									"key": "X-Response-Time",
-									"value": "41ms",
-									"name": "X-Response-Time",
-									"description": "Custom header"
-								},
-								{
 									"key": "X-XSS-Protection",
 									"value": "1; mode=block",
 									"name": "X-XSS-Protection",
@@ -462,39 +252,127 @@
 								}
 							],
 							"cookie": [],
-							"body": "[{\"id\":\"3fg\",\"url\":\"https://25.media.tumblr.com/tumblr_lqik92AS4I1qfy8klo1_500.jpg\",\"breeds\":[],\"categories\":[]}]"
+							"body": "[\n  {\n    \"id\": \"Hylo4Snaf\",\n    \"url\": \"https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg\",\n    \"width\": 1200,\n    \"height\": 922,\n    \"mime_type\": \"image/jpeg\",\n    \"breeds\": [\n      {\n        \"id\": 235,\n        \"name\": \"Spanish Water Dog\",\n        \"weight\": \" 30 to 50 pounds\",\n        \"height\": \"16 to 20 inches at the shoulder\",\n        \"life_span\": \"12 to 15 years\",\n        \"breed_group\": \"Sporting\"\n      }\n    ],\n    \"categories\": []\n  },\n  {\n    \"id\": \"Hylo4Snaf\",\n    \"url\": \"https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg\",\n    \"width\": 1200,\n    \"height\": 922,\n    \"mime_type\": \"image/jpeg\",\n    \"breeds\": [\n      {\n        \"id\": 235,\n        \"name\": \"Spanish Water Dog\",\n        \"weight\": \" 30 to 50 pounds\",\n        \"height\": \"16 to 20 inches at the shoulder\",\n        \"life_span\": \"12 to 15 years\",\n        \"breed_group\": \"Sporting\"\n      }\n    ],\n    \"categories\": []\n  }\n]"
+						},
+						{
+							"name": "/images/search",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "x-api-key",
+										"value": "YOUR-API-KEY"
+									}
+								],
+								"url": {
+									"raw": "{{endpoint}}v1/images/search",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"images",
+										"search"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "post-check=0, pre-check=0",
+									"name": "Cache-Control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "318",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 20 May 2018 05:20:42 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "Expires",
+									"value": "Tue, 03 Jul 2001 06:00:00 GMT",
+									"name": "Expires",
+									"description": "Gives the date/time after which the response is considered stale"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Sun May 20 2018 15:20:42 GMT+1000 (AEST)",
+									"name": "Last-Modified",
+									"description": "The last modified date for the requested object, in RFC 2822 format"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin",
+									"name": "Vary",
+									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "66ms",
+									"name": "X-Response-Time",
+									"description": "Custom header"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"httpOnly": false,
+									"domain": "localhost",
+									"path": "/",
+									"secure": false,
+									"value": "200003076-0f25be261a93d645f5dc8721dcb7ca9d",
+									"key": "addonLicense"
+								},
+								{
+									"expires": "Invalid Date",
+									"httpOnly": false,
+									"domain": "localhost",
+									"path": "/",
+									"secure": false,
+									"value": "2",
+									"key": "addonVariant"
+								},
+								{
+									"expires": "Invalid Date",
+									"httpOnly": false,
+									"domain": "localhost",
+									"path": "/",
+									"secure": false,
+									"value": "au",
+									"key": "addonRegion"
+								}
+							],
+							"body": "[{\"id\":\"Hylo4Snaf\",\"url\":\"https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg\",\"width\":1200,\"height\":922,\"mime_type\":\"image/jpeg\",\"breeds\":[{\"id\":235,\"name\":\"Spanish Water Dog\",\"weight\":\" 30 to 50 pounds\",\"height\":\"16 to 20 inches at the shoulder\",\"life_span\":\"12 to 15 years\",\"breed_group\":\"Sporting\"}],\"categories\":[]}]"
 						}
 					]
 				},
 				{
-					"name": "/images/:image_id - (Individual Image)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"",
-									"",
-									"  var jsonData = pm.response.json();",
-									"  ",
-									"pm.test(\"response is ok\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"response should be okay to process\", function () { ",
-									"    pm.response.to.not.be.error; ",
-									"    pm.response.to.not.have.jsonBody(\"error\"); ",
-									"});",
-									"",
-									"pm.test('Object response', function() {",
-									"  pm.expect(jsonData.id).to.equal('MjAzMDMwMg'); ",
-									"  pm.expect(jsonData.url).to.equal(\"https://cdn2.thecatapi.com/images/MjAzMDMwMg.jpg\"); ",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "/images/:image_id",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -507,46 +385,29 @@
 								"description": "[optional]  will save this request to your account analytics\n"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "{{endpoint}}v1/images/:image_id?sub_id&size&include_vote=&include_favourite",
+							"raw": "{{endpoint}}v1/images/BkIEhN3pG?",
 							"host": [
 								"{{endpoint}}v1"
 							],
 							"path": [
 								"images",
-								":image_id"
+								"BkIEhN3pG"
 							],
 							"query": [
 								{
 									"key": "sub_id",
-									"value": null,
-									"description": "[optional] if you want to save this request to your account stats"
-								},
-								{
-									"key": "size",
-									"value": null,
-									"description": "[optional] thumb , small, med or full - small is perfect for Discord"
-								},
-								{
-									"key": "include_vote",
 									"value": "",
-									"description": "[optional] include the last Vote for the Image from your account & sub_id"
-								},
-								{
-									"key": "include_favourite",
-									"value": null,
-									"description": "[optional] include the Favourite for the Image from your account & sub_id"
-								}
-							],
-							"variable": [
-								{
-									"key": "image_id",
-									"value": "MjAzMDMwMg",
-									"description": "The id of the image to get"
+									"description": "[optional] if you want to save this request to your account stats",
+									"disabled": true
 								}
 							]
 						},
-						"description": "#### Route\n\nhttps://api.thecatapi.com/v1/images/:image_id"
+						"description": "Return 1 image matchin the id passed."
 					},
 					"response": [
 						{
@@ -554,6 +415,10 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "{{endpoint}}v1/images/BkIEhN3pG",
 									"host": [
@@ -612,6 +477,148 @@
 					]
 				},
 				{
+					"name": "/images/:image_id/analysis",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[optional]  will save this request to your account analytics\n"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpoint}}v1/images/BkIEhN3pG?",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"images",
+								"BkIEhN3pG"
+							],
+							"query": [
+								{
+									"key": "sub_id",
+									"value": "",
+									"description": "[optional] if you want to save this request to your account stats",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get the raw analysis results for any uploaded image"
+					},
+					"response": [
+						{
+							"name": "/images/:image_id/analysis",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{YOUR-API-KEY}}",
+										"description": "[optional]  will save this request to your account analytics\n"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{endpoint}}v1/images/:image_id/analysis",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"images",
+										":image_id",
+										"analysis"
+									],
+									"query": [
+										{
+											"key": "sub_id",
+											"value": "",
+											"description": "[optional] if you want to save this request to your account stats",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "image_id",
+											"value": "xxBaNrfM0"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "2826ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1385"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:46:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"labels\": [\n            {\n                \"Name\": \"Animal\",\n                \"Confidence\": 99.90064239501953,\n                \"Instances\": [],\n                \"Parents\": []\n            },\n            {\n                \"Name\": \"Cat\",\n                \"Confidence\": 99.90064239501953,\n                \"Instances\": [\n                    {\n                        \"BoundingBox\": {\n                            \"Width\": 0.9043794274330139,\n                            \"Height\": 0.803057074546814,\n                            \"Left\": 0.024559099227190018,\n                            \"Top\": 0.15806715190410614\n                        },\n                        \"Confidence\": 97.5887680053711\n                    }\n                ],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Animal\"\n                    },\n                    {\n                        \"Name\": \"Mammal\"\n                    },\n                    {\n                        \"Name\": \"Pet\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Mammal\",\n                \"Confidence\": 99.90064239501953,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Animal\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Manx\",\n                \"Confidence\": 99.90064239501953,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Animal\"\n                    },\n                    {\n                        \"Name\": \"Cat\"\n                    },\n                    {\n                        \"Name\": \"Mammal\"\n                    },\n                    {\n                        \"Name\": \"Pet\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Pet\",\n                \"Confidence\": 99.90064239501953,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Animal\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Kitten\",\n                \"Confidence\": 98.19309997558594,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Animal\"\n                    },\n                    {\n                        \"Name\": \"Cat\"\n                    },\n                    {\n                        \"Name\": \"Mammal\"\n                    },\n                    {\n                        \"Name\": \"Pet\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Sleeping\",\n                \"Confidence\": 76.68528747558594,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Person\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Couch\",\n                \"Confidence\": 63.19022750854492,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Furniture\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Chair\",\n                \"Confidence\": 57.31343078613281,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Furniture\"\n                    }\n                ]\n            },\n            {\n                \"Name\": \"Abyssinian\",\n                \"Confidence\": 57.038516998291016,\n                \"Instances\": [],\n                \"Parents\": [\n                    {\n                        \"Name\": \"Animal\"\n                    },\n                    {\n                        \"Name\": \"Cat\"\n                    },\n                    {\n                        \"Name\": \"Mammal\"\n                    },\n                    {\n                        \"Name\": \"Pet\"\n                    }\n                ]\n            }\n        ],\n        \"moderation_labels\": [],\n        \"vendor\": \"AWS Rekognition\",\n        \"image_id\": \"xxBaNrfM0\",\n        \"created_at\": \"2023-10-28T17:44:36.000Z\"\n    }\n]"
+						}
+					]
+				},
+				{
 					"name": "/images/ (Your uploads)",
 					"request": {
 						"auth": {
@@ -629,8 +636,12 @@
 								"description": "[required] - will return all the images from your account\n"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "{{endpoint}}v1/images/?limit=10&page=0&order=DESC&sub_id=user1&breed_ids=1,4,28&category_ids=4&format=json&original_filename=",
+							"raw": "{{endpoint}}v1/images/?limit=10&page=0&order=DESC",
 							"host": [
 								"{{endpoint}}v1"
 							],
@@ -657,31 +668,42 @@
 								{
 									"key": "sub_id",
 									"value": "user1",
-									"description": "[Optional] If you want to "
+									"description": "[Optional] If you want to ",
+									"disabled": true
 								},
 								{
 									"key": "breed_ids",
 									"value": "1,4,28",
-									"description": "[Optional] Id's of the breeds to filter by"
+									"description": "[Optional] Id's of the breeds to filter by",
+									"disabled": true
 								},
 								{
 									"key": "category_ids",
 									"value": "4",
-									"description": "[Optional] Id's of the categories to filter by"
+									"description": "[Optional] Id's of the categories to filter by",
+									"disabled": true
 								},
 								{
 									"key": "format",
 									"value": "json",
-									"description": "[Optional] default is 'json', pass 'src' to redirect the request to the image's url - this is useful for setting the 'src' of an <img> tag."
+									"description": "[Optional] default is 'json', pass 'src' to redirect the request to the image's url - this is useful for setting the 'src' of an <img> tag.",
+									"disabled": true
 								},
 								{
 									"key": "original_filename",
 									"value": "",
-									"description": "[Optional] filter to files you uploaded with the same name"
+									"description": "[Optiona] filter to files you uploaded with the same name",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "",
+									"description": "[Optional] default applied your unique user_id from welcome email, filter to only show images from your account that you have uploaded",
+									"disabled": true
 								}
 							]
 						},
-						"description": "Returns the images from your account you uploaded via `/v1/images/upload`\n\n\n#### Route\n\nhttps://api.thecatapi.com/v1/images/\n\n\n#### Pagination\nIf order=ASC or order=DESC is passed, then the response will contain these values as Headers\n\n| Key  | Description                                                                                     |\n|------|-------------------------------------------------------------------------------------------------|\n| Pagination-Count | Integer - the total amount of results matching your search|\n| Pagination-Page  | Integer - the current page\n| Pagination-Limit | Integer - amount of results being returned per page\n|"
+						"description": "Only returns images from your account, uploaded via 'api/v1/images/upload'"
 					},
 					"response": [
 						{
@@ -689,6 +711,10 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "{{endpoint}}/api/v1/images/?limit=10",
 									"host": [
@@ -767,6 +793,10 @@
 										"description": "[Optional] "
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "{{endpoint}}v1/images/?limit=10&page=0&order=DESC",
 									"host": [
@@ -881,7 +911,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "multipart/form-data"
+								"value": "multipart/form-data",
+								"disabled": true
 							},
 							{
 								"key": "x-api-key",
@@ -894,15 +925,22 @@
 							"formdata": [
 								{
 									"key": "file",
-									"description": "File on your local machine",
 									"type": "file",
-									"src": "/Users/aden/Dropbox/ThatAPIPlatform/theCatAPI-service/test-images/tumblr_luij7yisUy1r4xjo2o1_r1_1280.jpg"
+									"src": "/Users/aden/Dropbox/7xcfo2doq4wb1.jpeg"
 								},
 								{
 									"key": "sub_id",
 									"value": "",
 									"description": "[optional] - a string you can use to segment your images, e.g. knowing which of your own users uploaded it.",
-									"type": "text"
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "breed_ids",
+									"value": "",
+									"description": "[optional] comma separated string of breed ids contained in the image",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -916,7 +954,7 @@
 								"upload"
 							]
 						},
-						"description": "#### Route\n\nhttps://api.thecatapi.com/v1/images/upload\n\nUpload your own Cat pictures. Anything that doesn't contain a cat, or contains anything inappropriate will be rejected.\n\n"
+						"description": "Make sure you're using the right field to send the image, and Content-Type header"
 					},
 					"response": [
 						{
@@ -926,12 +964,13 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "multipart/form-data"
+										"value": "multipart/form-data",
+										"disabled": true
 									},
 									{
 										"key": "x-api-key",
 										"value": "{{YOUR-API-KEY}}",
-										"description": "[required] - saves the uplaoded image to your account."
+										"description": "[required] - saves the uploaded image to your account."
 									}
 								],
 								"body": {
@@ -940,13 +979,20 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": []
+											"src": "/Users/aden/Dropbox/Mac/Downloads/bl4.jpeg"
 										},
 										{
 											"key": "sub_id",
-											"value": "",
+											"value": "my-user-1",
 											"description": "[optional] - a string you can use to segment your images, e.g. knowing which of your own users uploaded it.",
 											"type": "text"
+										},
+										{
+											"key": "breed_ids",
+											"value": "",
+											"description": "[optional] comma separated string of breed ids contained in the image",
+											"type": "text",
+											"disabled": true
 										}
 									]
 								},
@@ -961,30 +1007,10 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Created",
+							"code": 201,
 							"_postman_previewlanguage": "json",
 							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 10:12:33 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
 								{
 									"key": "X-DNS-Prefetch-Control",
 									"value": "off"
@@ -1014,172 +1040,52 @@
 									"value": "Origin"
 								},
 								{
-									"key": "X-Response-Time",
-									"value": "3605ms"
+									"key": "Retry-After-Seconds",
+									"value": "60"
 								},
 								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"id\": \"9ccXTANkb\",\n    \"url\": \"https://cdn2.thecatapi.com/images/9ccXTANkb.jpg\",\n    \"pending\": 0,\n    \"approved\": 1\n}"
-						}
-					]
-				},
-				{
-					"name": "/images/upload2 for testing theImageAPI integration",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "multipart/form-data"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required] - saves the uplaoded image to your account."
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"description": "File on your local machine",
-									"type": "file",
-									"src": "/Users/aden/Dropbox/ThatAPIPlatform/theCatAPI-service/test-images/tumblr_luij7yisUy1r4xjo2o1_r1_1280.jpg"
+									"key": "RateLimit-Limit",
+									"value": "120"
 								},
 								{
-									"key": "sub_id",
-									"value": "",
-									"description": "[optional] - a string you can use to segment your images, e.g. knowing which of your own users uploaded it.",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{endpoint}}v1/images/upload2",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"images",
-								"upload2"
-							]
-						},
-						"description": "#### Route\n\nhttps://api.thecatapi.com/v1/images/upload\n\nUpload your own Cat pictures. Anything that doesn't contain a cat, or contains anything inappropriate will be rejected.\n\n"
-					},
-					"response": [
-						{
-							"name": "/images/upload",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "multipart/form-data"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required] - saves the uplaoded image to your account."
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "file",
-											"type": "file",
-											"src": []
-										},
-										{
-											"key": "sub_id",
-											"value": "",
-											"description": "[optional] - a string you can use to segment your images, e.g. knowing which of your own users uploaded it.",
-											"type": "text"
-										}
-									]
+									"key": "RateLimit-Remaining",
+									"value": "119"
 								},
-								"url": {
-									"raw": "{{endpoint}}v1/images/upload",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"images",
-										"upload"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
 								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 10:12:33 GMT"
+									"key": "RateLimit-Consumed",
+									"value": "1"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:45:29.282Z"
 								},
 								{
 									"key": "Content-Type",
 									"value": "application/json; charset=utf-8"
 								},
 								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
+									"key": "X-Response-Time",
+									"value": "7625ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:44:36 GMT"
 								},
 								{
 									"key": "Connection",
 									"value": "keep-alive"
 								},
 								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "3605ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"id\": \"9ccXTANkb\",\n    \"url\": \"https://cdn2.thecatapi.com/images/9ccXTANkb.jpg\",\n    \"pending\": 0,\n    \"approved\": 1\n}"
+							"body": "{\n    \"id\": \"xxBaNrfM0\",\n    \"url\": \"https://cdn2.thecatapi.com/images/xxBaNrfM0.jpg\",\n    \"sub_id\": \"my-user-1\",\n    \"width\": 480,\n    \"height\": 640,\n    \"original_filename\": \"bl4.jpeg\",\n    \"pending\": 0,\n    \"approved\": 1\n}"
 						}
 					]
 				},
@@ -1197,7 +1103,7 @@
 							},
 							{
 								"key": "x-api-key",
-								"value": "example-api-key-for-your-account"
+								"value": "{{YOUR-API-KEY}}"
 							}
 						],
 						"body": {
@@ -1216,17 +1122,15 @@
 							"variable": [
 								{
 									"key": "image_id",
-									"value": "{{image_id}}",
-									"description": "The id of the image to delete"
+									"value": "dMsUj1-nz"
 								}
 							]
-						},
-						"description": "Delete any image you uploaded."
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/images/:image_id/analysis",
+					"name": "/images/:image_id/breeds",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1235,232 +1139,35 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": "x-"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}"
+								"value": "application/json"
 							}
 						],
 						"url": {
-							"raw": "{{endpoint}}v1/images/:image_id/analysis",
+							"raw": "{{endpoint}}v1/images/:image_id/breeds",
 							"host": [
 								"{{endpoint}}v1"
 							],
 							"path": [
 								"images",
 								":image_id",
-								"analysis"
+								"breeds"
 							],
 							"variable": [
 								{
 									"key": "image_id",
-									"value": "9ccXTANkb",
-									"description": "Id of the image to return any analysis performed on it during upload."
+									"value": ""
 								}
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/images/:image_id/breeds",
+					"request": {
+						"auth": {
+							"type": "noauth"
 						},
-						"description": "Get the analysis of any images you uploaded.\n\nWarning: the response format will change in the future as the Analysis engine improves."
-					},
-					"response": [
-						{
-							"name": "/images/:image_id/analysis",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"description": "x-"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}"
-									}
-								],
-								"url": {
-									"raw": "{{endpoint}}v1/images/:image_id/analysis",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"images",
-										":image_id",
-										"analysis"
-									],
-									"variable": [
-										{
-											"key": "image_id",
-											"value": "9ccXTANkb"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 10:17:12 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "3ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"labels\": \"[{\\\"Name\\\":\\\"Pet\\\",\\\"Confidence\\\":98.60120391845703},{\\\"Name\\\":\\\"Animal\\\",\\\"Confidence\\\":98.60120391845703},{\\\"Name\\\":\\\"Mammal\\\",\\\"Confidence\\\":98.60120391845703},{\\\"Name\\\":\\\"Cat\\\",\\\"Confidence\\\":98.60120391845703},{\\\"Name\\\":\\\"Siamese\\\",\\\"Confidence\\\":93.0421142578125}]\",\n        \"moderation_labels\": \"[]\",\n        \"vendor\": \"AWS Rekognition\",\n        \"approved\": 1,\n        \"rejected\": 0\n    }\n]"
-						}
-					]
-				}
-			],
-			"description": "With /images routes you can:\n- Search for any images\n- Itterate through all the images by order DESC or ASC\n- Get individual images\n- Upload your own images\n- Get the results of any analysis performed when the image was uploaded",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Favourites",
-			"item": [
-				{
-					"name": "/favourites",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
-							}
-						],
-						"url": {
-							"raw": "{{endpoint}}v1/favourites?sub_id",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"favourites"
-							],
-							"query": [
-								{
-									"key": "sub_id",
-									"value": "",
-									"description": "[optional] To get the favourites for only the 'sub_id' you used when creating the Favourite via POST /favourites"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/favourites/:favourite_id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
-							}
-						],
-						"url": {
-							"raw": "{{endpoint}}v1/favourites/:favourite_id",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"favourites",
-								":favourite_id"
-							],
-							"variable": [
-								{
-									"key": "favourite_id",
-									"value": "{{favourite_id}}",
-									"description": "The id of the individual Favourite you want to get"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/favourites",
-					"request": {
 						"method": "POST",
 						"header": [
 							{
@@ -1470,216 +1177,39 @@
 							{
 								"key": "x-api-key",
 								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
+								"description": "[required] - for now, you can only tag your own images with a breed\n\n"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"image_id\":\"9ccXTANkb\",\n\t\"sub_id\":\"your-user-1234\"\n}"
+							"raw": "{\n\t\"breed_id\": 10\n}"
 						},
 						"url": {
-							"raw": "{{endpoint}}v1/favourites",
+							"raw": "{{endpoint}}v1/images/:image_id/breeds",
 							"host": [
 								"{{endpoint}}v1"
 							],
 							"path": [
-								"favourites"
+								"images",
+								":image_id",
+								"breeds"
+							],
+							"variable": [
+								{
+									"key": "image_id",
+									"value": ""
+								}
 							]
-						},
-						"description": "\n\n#### POST Body Parameters\n\n| Key  | Required | Description                                                                                     |\n|------|----------|-------------------------------------------------------------------------------------------------|\n| image_id | required | The id of the image to favourite.\n| sub_id | optional | A custom value you can set yourself, and then use to split the results of GET /favourites by, e.g. your own user's id.                                                    |"
-					},
-					"response": [
-						{
-							"name": "/favourites - creating a favourite with a sub_id",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required]"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"image_id\":\"9ccXTANkb\",\n\t\"sub_id\": \"my-user-1234\"\n}"
-								},
-								"url": {
-									"raw": "{{endpoint}}v1/favourites",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"favourites"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 10:22:48 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "9ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"SUCCESS\",\n    \"id\": 1708\n}"
-						},
-						{
-							"name": "/favourites - saving a favourite to your account without a sub_id",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required]"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"image_id\":\"9ccXTANkb\"\n}"
-								},
-								"url": {
-									"raw": "{{endpoint}}v1/favourites",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"favourites"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 10:23:08 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "10ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"SUCCESS\",\n    \"id\": 1709\n}"
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "/favourites/:favourite_id",
+					"name": "/images/:image_id/breeds/:breed_id",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -1689,781 +1219,33 @@
 							{
 								"key": "x-api-key",
 								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
+								"description": "[required] - only you can delete breeds from your images\n"
 							}
 						],
 						"url": {
-							"raw": "{{endpoint}}v1/favourites/:favourite_id",
+							"raw": "{{endpoint}}v1/images/:image_id/breeds/:breed_id",
 							"host": [
 								"{{endpoint}}v1"
 							],
 							"path": [
-								"favourites",
-								":favourite_id"
+								"images",
+								":image_id",
+								"breeds",
+								":breed_id"
 							],
 							"variable": [
 								{
-									"key": "favourite_id",
-									"value": "{{favourite_id}}",
-									"description": "The id of the Favourite you want to delete from your account"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "/favourites/:favourite_id - deleting a favourite from your account",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required]"
-									}
-								],
-								"url": {
-									"raw": "{{endpoint}}v1/favourites/:favourite_id",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"favourites",
-										":favourite_id"
-									],
-									"variable": [
-										{
-											"key": "favourite_id",
-											"value": "1709",
-											"description": "The id of the Favourite you want to delete from your account"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 10:25:12 GMT"
+									"key": "image_id",
+									"value": ""
 								},
 								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "8ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"SUCCESS\"\n}"
-						}
-					]
-				}
-			],
-			"description": "These routes allow you to Favourite any image, or use a sub_id to favourite images for each of your users.",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Votes",
-			"item": [
-				{
-					"name": "/votes",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
-							}
-						],
-						"url": {
-							"raw": "{{endpoint}}v1/votes?sub_id",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"votes"
-							],
-							"query": [
-								{
-									"key": "sub_id",
-									"value": null,
-									"description": "[optional] To get the votes for only the 'sub_id' you used when creating the Vote via POST /votes"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "/votes",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required]"
-									}
-								],
-								"url": {
-									"raw": "{{endpoint}}v1/votes?sub_id",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"votes"
-									],
-									"query": [
-										{
-											"key": "sub_id",
-											"value": null,
-											"description": "[optional] To get the votes for only the 'sub_id' you used when creating the Vote via POST /votes"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 18 Nov 2018 11:56:11 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Pagination-Count",
-									"value": "5665"
-								},
-								{
-									"key": "Pagination-Page",
-									"value": "0"
-								},
-								{
-									"key": "Pagination-Limit",
-									"value": "100"
-								},
-								{
-									"key": "Access-Control-Expose-Headers",
-									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "52ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"id\": 426,\n        \"image_id\": \"c1\",\n        \"sub_id\": \"test\",\n        \"value\": 1\n    },\n    {\n        \"id\": 427,\n        \"image_id\": \"c2\",\n        \"sub_id\": \"test\",\n        \"value\": 1\n    },\n    {\n        \"id\": 31098,\n        \"image_id\": \"43u\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31099,\n        \"image_id\": \"4lo\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31100,\n        \"image_id\": \"8rm\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31101,\n        \"image_id\": \"8eq\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31102,\n        \"image_id\": \"39i\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31103,\n        \"image_id\": \"3mq\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31104,\n        \"image_id\": \"3c4\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31105,\n        \"image_id\": \"5f1\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31106,\n        \"image_id\": \"9k8\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31107,\n        \"image_id\": \"2dc\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31108,\n        \"image_id\": \"3ne\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31109,\n        \"image_id\": \"7qi\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31110,\n        \"image_id\": \"5c8\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31111,\n        \"image_id\": \"6s6\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31112,\n        \"image_id\": \"4jd\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31113,\n        \"image_id\": \"73h\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31114,\n        \"image_id\": \"3j0\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31400,\n        \"image_id\": \"7cu\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31401,\n        \"image_id\": \"1pt\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31402,\n        \"image_id\": \"9n8\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31403,\n        \"image_id\": \"915\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31404,\n        \"image_id\": \"887\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31405,\n        \"image_id\": \"1k6\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31406,\n        \"image_id\": \"11t\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31407,\n        \"image_id\": \"575\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31408,\n        \"image_id\": \"62b\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31409,\n        \"image_id\": \"148\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31411,\n        \"image_id\": \"54s\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31412,\n        \"image_id\": \"2ha\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31413,\n        \"image_id\": \"458\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31414,\n        \"image_id\": \"71m\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31415,\n        \"image_id\": \"6gr\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31416,\n        \"image_id\": \"3p4\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31417,\n        \"image_id\": \"6h2\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31418,\n        \"image_id\": \"6ls\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31419,\n        \"image_id\": \"2am\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31420,\n        \"image_id\": \"7ff\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31421,\n        \"image_id\": \"7of\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31422,\n        \"image_id\": \"tv\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31423,\n        \"image_id\": \"a0\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31424,\n        \"image_id\": \"2af\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31425,\n        \"image_id\": \"8h\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31427,\n        \"image_id\": \"1o3\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31428,\n        \"image_id\": \"1hf\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31429,\n        \"image_id\": \"gq\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31430,\n        \"image_id\": \"4nt\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31431,\n        \"image_id\": \"325\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31432,\n        \"image_id\": \"4cu\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31433,\n        \"image_id\": \"4en\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31485,\n        \"image_id\": \"1rk\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31486,\n        \"image_id\": \"s3\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31487,\n        \"image_id\": \"7da\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31488,\n        \"image_id\": \"kb\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31489,\n        \"image_id\": \"6gi\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31490,\n        \"image_id\": \"qn\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31491,\n        \"image_id\": \"5th\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31492,\n        \"image_id\": \"60t\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31493,\n        \"image_id\": \"2us\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31494,\n        \"image_id\": \"2oa\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31495,\n        \"image_id\": \"5qb\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31496,\n        \"image_id\": \"77q\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31497,\n        \"image_id\": \"8sj\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31498,\n        \"image_id\": \"7ef\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31499,\n        \"image_id\": \"c0\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31500,\n        \"image_id\": \"qg\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31501,\n        \"image_id\": \"27c\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31502,\n        \"image_id\": \"35b\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31503,\n        \"image_id\": \"2v1\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31504,\n        \"image_id\": \"510\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31505,\n        \"image_id\": \"mq\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31506,\n        \"image_id\": \"cj\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31507,\n        \"image_id\": \"4t2\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31508,\n        \"image_id\": \"3rb\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31509,\n        \"image_id\": \"3q0\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31510,\n        \"image_id\": \"2pq\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31511,\n        \"image_id\": \"61c\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31512,\n        \"image_id\": \"6ur\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31513,\n        \"image_id\": \"396\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31514,\n        \"image_id\": \"8sc\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31515,\n        \"image_id\": \"82e\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31516,\n        \"image_id\": \"7a2\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31517,\n        \"image_id\": \"3cl\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31518,\n        \"image_id\": \"98k\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31519,\n        \"image_id\": \"75c\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31520,\n        \"image_id\": \"4s5\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31521,\n        \"image_id\": \"4m2\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31522,\n        \"image_id\": \"bt\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31523,\n        \"image_id\": \"3l9\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31524,\n        \"image_id\": \"3it\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31525,\n        \"image_id\": \"54j\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31526,\n        \"image_id\": \"1v6\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31527,\n        \"image_id\": \"1j0\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31528,\n        \"image_id\": \"1eo\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31529,\n        \"image_id\": \"20m\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31530,\n        \"image_id\": \"31a\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31531,\n        \"image_id\": \"82\",\n        \"sub_id\": null,\n        \"value\": 1\n    },\n    {\n        \"id\": 31532,\n        \"image_id\": \"8ai\",\n        \"sub_id\": null,\n        \"value\": 0\n    },\n    {\n        \"id\": 31533,\n        \"image_id\": \"82\",\n        \"sub_id\": null,\n        \"value\": 1\n    }\n]"
-						}
-					]
-				},
-				{
-					"name": "/votes/:vote_id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
-							}
-						],
-						"url": {
-							"raw": "{{endpoint}}v1/votes/:vote_id",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"votes",
-								":vote_id"
-							],
-							"variable": [
-								{
-									"key": "vote_id",
-									"value": "{{vote_id}}",
-									"description": "The id of the individual Vote you want to get"
+									"key": "breed_id",
+									"value": ""
 								}
 							]
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "/votes",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"image_id\":\"ol\",\n\t\"sub_id\": \"my-user-1234\",\n\t\"value\":1\n}"
-						},
-						"url": {
-							"raw": "{{endpoint}}v1/votes",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"votes"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "/votes - a Down vote for image_id 'asf2'",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required]"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"image_id\":\"asf2\",\n\t\"sub_id\": \"my-user-1234\",\n\t\"value\":0\n}"
-								},
-								"url": {
-									"raw": "{{endpoint}}v1/votes",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"votes"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 04:06:15 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "27ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"SUCCESS\",\n    \"id\": 36491\n}"
-						},
-						{
-							"name": "/votes - an Up vote for image_id 'asf2' with a custom sub_id",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "x-api-key",
-										"value": "{{YOUR-API-KEY}}",
-										"description": "[required]"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"image_id\":\"asf2\",\n\t\"sub_id\": \"my-user-1234\",\n\t\"value\":1\n}"
-								},
-								"url": {
-									"raw": "{{endpoint}}v1/votes",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"votes"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Thu, 08 Nov 2018 04:04:29 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "11ms"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"SUCCESS\",\n    \"id\": 36490\n}"
-						}
-					]
-				},
-				{
-					"name": "/votes/:vote_id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{YOUR-API-KEY}}",
-								"description": "[required]"
-							}
-						],
-						"url": {
-							"raw": "{{endpoint}}v1/votes/:vote_id",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"votes",
-								":vote_id"
-							],
-							"variable": [
-								{
-									"key": "vote_id",
-									"value": "",
-									"type": "string"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "These routes allow you to Vote any image Up or Down (value=1 or value=0). You can use a sub_id to let each of your users Vote, and get Votes filtered by that sub_id.",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Categories",
-			"item": [
-				{
-					"name": "/categories",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{endpoint}}v1/categories",
-							"host": [
-								"{{endpoint}}v1"
-							],
-							"path": [
-								"categories"
-							]
-						},
-						"description": "Returns all the available categories to use when search for images via `/v1/images/search` as the 'category_ids' parameter."
-					},
-					"response": [
-						{
-							"name": "/categories",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{endpoint}}v1/categories?",
-									"host": [
-										"{{endpoint}}v1"
-									],
-									"path": [
-										"categories"
-									],
-									"query": [
-										{
-											"key": "Content-Type",
-											"value": "appli",
-											"disabled": true
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Access-Control-Expose-Headers",
-									"value": "Pagination-Count, Pagination-Page, Pagination-Limit",
-									"name": "Access-Control-Expose-Headers",
-									"description": "Lets a server whitelist headers that browsers are allowed to access."
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Encoding",
-									"value": "gzip",
-									"name": "Content-Encoding",
-									"description": "The type of encoding used on the data."
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 29 Aug 2018 15:50:31 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "Pagination-Count",
-									"value": "11",
-									"name": "Pagination-Count",
-									"description": "Custom header"
-								},
-								{
-									"key": "Pagination-Limit",
-									"value": "1000",
-									"name": "Pagination-Limit",
-									"description": "Custom header"
-								},
-								{
-									"key": "Pagination-Page",
-									"value": "0",
-									"name": "Pagination-Page",
-									"description": "Custom header"
-								},
-								{
-									"key": "Server",
-									"value": "nginx/1.12.1",
-									"name": "Server",
-									"description": "A name for the server"
-								},
-								{
-									"key": "Strict-Transport-Security",
-									"value": "max-age=15552000; includeSubDomains",
-									"name": "Strict-Transport-Security",
-									"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked",
-									"name": "Transfer-Encoding",
-									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
-								},
-								{
-									"key": "Vary",
-									"value": "Origin",
-									"name": "Vary",
-									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff",
-									"name": "X-Content-Type-Options",
-									"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
-								},
-								{
-									"key": "X-DNS-Prefetch-Control",
-									"value": "off",
-									"name": "X-DNS-Prefetch-Control",
-									"description": "Custom header"
-								},
-								{
-									"key": "X-Download-Options",
-									"value": "noopen",
-									"name": "X-Download-Options",
-									"description": "Custom header"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "SAMEORIGIN",
-									"name": "X-Frame-Options",
-									"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
-								},
-								{
-									"key": "X-Response-Time",
-									"value": "4ms",
-									"name": "X-Response-Time",
-									"description": "Custom header"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block",
-									"name": "X-XSS-Protection",
-									"description": "Cross-site scripting (XSS) filter"
-								}
-							],
-							"cookie": [],
-							"body": "[{\"id\":5,\"name\":\"boxes\"},{\"id\":6,\"name\":\"caturday\"},{\"id\":15,\"name\":\"clothes\"},{\"id\":9,\"name\":\"dream\"},{\"id\":3,\"name\":\"funny\"},{\"id\":1,\"name\":\"hats\"},{\"id\":10,\"name\":\"kittens\"},{\"id\":14,\"name\":\"sinks\"},{\"id\":2,\"name\":\"space\"},{\"id\":4,\"name\":\"sunglasses\"},{\"id\":7,\"name\":\"ties\"}]"
-						}
-					]
 				}
 			]
 		},
@@ -2473,9 +1255,6 @@
 				{
 					"name": "/breeds",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -2505,7 +1284,7 @@
 					},
 					"response": [
 						{
-							"name": "{{endpoint}}v1/breeds",
+							"name": "/breeds",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -2515,7 +1294,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{endpoint}}v1/breeds?limit=10&page=0",
+									"raw": "{{endpoint}}v1/breeds?limit=2&page=0",
 									"host": [
 										"{{endpoint}}v1"
 									],
@@ -2525,7 +1304,7 @@
 									"query": [
 										{
 											"key": "limit",
-											"value": "10"
+											"value": "2"
 										},
 										{
 											"key": "page",
@@ -2539,44 +1318,96 @@
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
 								},
 								{
-									"key": "Content-Length",
-									"value": "338",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
 								},
 								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
 								},
 								{
-									"key": "Date",
-									"value": "Sun, 13 May 2018 13:28:57 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
 								},
 								{
 									"key": "Vary",
-									"value": "Origin",
-									"name": "Vary",
-									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+									"value": "Origin"
+								},
+								{
+									"key": "Retry-After-Seconds",
+									"value": "32.112"
+								},
+								{
+									"key": "RateLimit-Limit",
+									"value": "120"
+								},
+								{
+									"key": "RateLimit-Remaining",
+									"value": "118"
+								},
+								{
+									"key": "RateLimit-Consumed",
+									"value": "2"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:24:17.564Z"
+								},
+								{
+									"key": "Pagination-Count",
+									"value": "67"
+								},
+								{
+									"key": "Pagination-Page",
+									"value": "0"
+								},
+								{
+									"key": "Pagination-Limit",
+									"value": "2"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
 								},
 								{
 									"key": "X-Response-Time",
-									"value": "28ms",
-									"name": "X-Response-Time",
-									"description": "Custom header"
+									"value": "920ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2353"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:23:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "[{\"id\":1,\"name\":\"Affenpinscher\"},{\"id\":2,\"name\":\"Afghan Hound\"},{\"id\":3,\"name\":\"African Hunting Dog\"},{\"id\":4,\"name\":\"Airedale Terrier\"},{\"id\":5,\"name\":\"Akbash Dog\"},{\"id\":6,\"name\":\"Akita\"},{\"id\":7,\"name\":\"Alapaha Blue Blood Bulldog\"},{\"id\":8,\"name\":\"Alaskan Husky\"},{\"id\":9,\"name\":\"Alaskan Malamute\"},{\"id\":10,\"name\":\"American Bulldog\"}]"
+							"body": "[\n    {\n        \"weight\": {\n            \"imperial\": \"7  -  10\",\n            \"metric\": \"3 - 5\"\n        },\n        \"id\": \"abys\",\n        \"name\": \"Abyssinian\",\n        \"cfa_url\": \"http://cfa.org/Breeds/BreedsAB/Abyssinian.aspx\",\n        \"vetstreet_url\": \"http://www.vetstreet.com/cats/abyssinian\",\n        \"vcahospitals_url\": \"https://vcahospitals.com/know-your-pet/cat-breeds/abyssinian\",\n        \"temperament\": \"Active, Energetic, Independent, Intelligent, Gentle\",\n        \"origin\": \"Egypt\",\n        \"country_codes\": \"EG\",\n        \"country_code\": \"EG\",\n        \"description\": \"The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals.\",\n        \"life_span\": \"14 - 15\",\n        \"indoor\": 0,\n        \"lap\": 1,\n        \"alt_names\": \"\",\n        \"adaptability\": 5,\n        \"affection_level\": 5,\n        \"child_friendly\": 3,\n        \"dog_friendly\": 4,\n        \"energy_level\": 5,\n        \"grooming\": 1,\n        \"health_issues\": 2,\n        \"intelligence\": 5,\n        \"shedding_level\": 2,\n        \"social_needs\": 5,\n        \"stranger_friendly\": 5,\n        \"vocalisation\": 1,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 1,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/Abyssinian_(cat)\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"0XYvRd7oD\",\n        \"image\": {\n            \"id\": \"0XYvRd7oD\",\n            \"width\": 1204,\n            \"height\": 1445,\n            \"url\": \"https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg\"\n        }\n    },\n    {\n        \"weight\": {\n            \"imperial\": \"7 - 10\",\n            \"metric\": \"3 - 5\"\n        },\n        \"id\": \"aege\",\n        \"name\": \"Aegean\",\n        \"vetstreet_url\": \"http://www.vetstreet.com/cats/aegean-cat\",\n        \"temperament\": \"Affectionate, Social, Intelligent, Playful, Active\",\n        \"origin\": \"Greece\",\n        \"country_codes\": \"GR\",\n        \"country_code\": \"GR\",\n        \"description\": \"Native to the Greek islands known as the Cyclades in the Aegean Sea, these are natural cats, meaning they developed without humans getting involved in their breeding. As a breed, Aegean Cats are rare, although they are numerous on their home islands. They are generally friendly toward people and can be excellent cats for families with children.\",\n        \"life_span\": \"9 - 12\",\n        \"indoor\": 0,\n        \"alt_names\": \"\",\n        \"adaptability\": 5,\n        \"affection_level\": 4,\n        \"child_friendly\": 4,\n        \"dog_friendly\": 4,\n        \"energy_level\": 3,\n        \"grooming\": 3,\n        \"health_issues\": 1,\n        \"intelligence\": 3,\n        \"shedding_level\": 3,\n        \"social_needs\": 4,\n        \"stranger_friendly\": 4,\n        \"vocalisation\": 3,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 0,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/Aegean_cat\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"ozEvzdVM-\",\n        \"image\": {\n            \"id\": \"ozEvzdVM-\",\n            \"width\": 1200,\n            \"height\": 800,\n            \"url\": \"https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg\"\n        }\n    }\n]"
 						}
 					]
 				},
@@ -2700,18 +1531,10 @@
 							"body": "{\"id\":2,\"name\":\"Afghan Hound\",\"weight\":\" 50 to 60 pounds\",\"height\":\"25 to 27 inches at the shoulder\",\"life_span\":\"10 to 13 years\",\"bred_for\":\"Coursing and hunting\",\"breed_group\":\"Hound\"}"
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Sources",
-			"item": [
+				},
 				{
-					"name": "/sources",
+					"name": "/breeds/:breed_id/facts",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -2720,52 +1543,167 @@
 							}
 						],
 						"url": {
-							"raw": "{{endpoint}}v1/sources?limit=10&page=0",
+							"raw": "{{endpoint}}v1/breeds/:breed_id/facts",
 							"host": [
 								"{{endpoint}}v1"
 							],
 							"path": [
-								"sources"
+								"breeds",
+								":breed_id",
+								"facts"
 							],
-							"query": [
+							"variable": [
 								{
-									"key": "limit",
-									"value": "10"
-								},
-								{
-									"key": "page",
-									"value": "0"
+									"key": "breed_id",
+									"value": "ragd"
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "/sources",
+							"name": "/breeds/:breed_id",
 							"originalRequest": {
 								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
+								"header": [],
 								"url": {
-									"raw": "{{endpoint}}v1/sources?limit=10&page=0",
+									"raw": "{{endpoint}}v1/breeds/2",
 									"host": [
 										"{{endpoint}}v1"
 									],
 									"path": [
-										"sources"
+										"breeds",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "187",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 19 May 2018 12:51:33 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin",
+									"name": "Vary",
+									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "66ms",
+									"name": "X-Response-Time",
+									"description": "Custom header"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"httpOnly": false,
+									"domain": "localhost",
+									"path": "/",
+									"secure": false,
+									"value": "200003076-0f25be261a93d645f5dc8721dcb7ca9d",
+									"key": "addonLicense"
+								},
+								{
+									"expires": "Invalid Date",
+									"httpOnly": false,
+									"domain": "localhost",
+									"path": "/",
+									"secure": false,
+									"value": "2",
+									"key": "addonVariant"
+								},
+								{
+									"expires": "Invalid Date",
+									"httpOnly": false,
+									"domain": "localhost",
+									"path": "/",
+									"secure": false,
+									"value": "au",
+									"key": "addonRegion"
+								}
+							],
+							"body": "{\"id\":2,\"name\":\"Afghan Hound\",\"weight\":\" 50 to 60 pounds\",\"height\":\"25 to 27 inches at the shoulder\",\"life_span\":\"10 to 13 years\",\"bred_for\":\"Coursing and hunting\",\"breed_group\":\"Hound\"}"
+						}
+					]
+				},
+				{
+					"name": "Search Breeds",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}v1/breeds/search?q=air&attach_image=1",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"breeds",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "air",
+									"description": "search term for breed name"
+								},
+								{
+									"key": "attach_image",
+									"value": "1",
+									"description": "[optional] whether to attach the reference_image_id image or not"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Search by breed name example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{endpoint}}v1/breeds/search?q=air&attach_image=1",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"breeds",
+										"search"
 									],
 									"query": [
 										{
-											"key": "limit",
-											"value": "10"
+											"key": "q",
+											"value": "air",
+											"description": "search term for breed name"
 										},
 										{
-											"key": "page",
-											"value": "0"
+											"key": "attach_image",
+											"value": "1",
+											"description": "[optional] whether to attach the reference_image_id image or not"
 										}
 									]
 								}
@@ -2803,24 +1741,24 @@
 									"value": "Origin"
 								},
 								{
-									"key": "Pagination-Count",
-									"value": "31"
+									"key": "Retry-After-Seconds",
+									"value": "60"
 								},
 								{
-									"key": "Pagination-Page",
-									"value": "0"
+									"key": "RateLimit-Limit",
+									"value": "120"
 								},
 								{
-									"key": "Pagination-Limit",
-									"value": "10"
+									"key": "RateLimit-Remaining",
+									"value": "119"
 								},
 								{
-									"key": "Access-Control-Expose-Headers",
-									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+									"key": "RateLimit-Consumed",
+									"value": "1"
 								},
 								{
-									"key": "Cache-Control",
-									"value": "public, max-age=12800"
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:25:59.859Z"
 								},
 								{
 									"key": "Content-Type",
@@ -2828,43 +1766,1389 @@
 								},
 								{
 									"key": "X-Response-Time",
-									"value": "1ms"
+									"value": "1616ms"
 								},
 								{
 									"key": "Content-Length",
-									"value": "795"
+									"value": "7922"
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 05 Dec 2018 05:39:18 GMT"
+									"value": "Sun, 29 Oct 2023 04:25:00 GMT"
 								},
 								{
 									"key": "Connection",
 									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Wikipedia\",\n        \"url\": \"https://en.wikipedia.org\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 2,\n        \"name\": \"VCA Hospitals\",\n        \"url\": \"https://vcahospitals.com\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 3,\n        \"name\": \"VetStreet\",\n        \"url\": \"http://www.vetstreet.com\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 4,\n        \"name\": \"PetHelpful\",\n        \"url\": \"https://pethelpful.com/\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 5,\n        \"name\": \"Bengal cat club\",\n        \"url\": \"https://bengalcatclub.com\",\n        \"breed_id\": \"beng\"\n    },\n    {\n        \"id\": 6,\n        \"name\": \"Pet MD\",\n        \"url\": \"https://www.petmd.com\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 7,\n        \"name\": \"PETAZI\",\n        \"url\": \"https://petazi.com\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 8,\n        \"name\": \"CatTime\",\n        \"url\": \"https://cattime.com\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 10,\n        \"name\": \"The Governing Council of the Cat Fancy\",\n        \"url\": \"https://www.gccfcats.org\",\n        \"breed_id\": null\n    },\n    {\n        \"id\": 12,\n        \"name\": \"Hillspet\",\n        \"url\": \"https://www.hillspet.com.au\",\n        \"breed_id\": null\n    }\n]"
+							"body": "[\n    {\n        \"weight\": {\n            \"imperial\": \"8 - 15\",\n            \"metric\": \"4 - 7\"\n        },\n        \"id\": \"asho\",\n        \"name\": \"American Shorthair\",\n        \"cfa_url\": \"http://cfa.org/Breeds/BreedsAB/AmericanShorthair.aspx\",\n        \"vetstreet_url\": \"http://www.vetstreet.com/cats/american-shorthair\",\n        \"vcahospitals_url\": \"https://vcahospitals.com/know-your-pet/cat-breeds/american-shorthair\",\n        \"temperament\": \"Active, Curious, Easy Going, Playful, Calm\",\n        \"origin\": \"United States\",\n        \"country_codes\": \"US\",\n        \"country_code\": \"US\",\n        \"description\": \"The American Shorthair is known for its longevity, robust health, good looks, sweet personality, and amiability with children, dogs, and other pets.\",\n        \"life_span\": \"15 - 17\",\n        \"indoor\": 0,\n        \"lap\": 1,\n        \"alt_names\": \"Domestic Shorthair\",\n        \"adaptability\": 5,\n        \"affection_level\": 5,\n        \"child_friendly\": 4,\n        \"dog_friendly\": 5,\n        \"energy_level\": 3,\n        \"grooming\": 1,\n        \"health_issues\": 3,\n        \"intelligence\": 3,\n        \"shedding_level\": 3,\n        \"social_needs\": 4,\n        \"stranger_friendly\": 3,\n        \"vocalisation\": 3,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 1,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/American_Shorthair\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"JFPROfGtQ\",\n        \"image\": {\n            \"id\": \"JFPROfGtQ\",\n            \"width\": 1600,\n            \"height\": 1200,\n            \"url\": \"https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg\"\n        }\n    },\n    {\n        \"weight\": {\n            \"imperial\": \"8 - 15\",\n            \"metric\": \"4 - 7\"\n        },\n        \"id\": \"awir\",\n        \"name\": \"American Wirehair\",\n        \"cfa_url\": \"http://cfa.org/Breeds/BreedsAB/AmericanWirehair.aspx\",\n        \"vetstreet_url\": \"http://www.vetstreet.com/cats/american-wirehair\",\n        \"temperament\": \"Affectionate, Curious, Gentle, Intelligent, Interactive, Lively, Loyal, Playful, Sensible, Social\",\n        \"origin\": \"United States\",\n        \"country_codes\": \"US\",\n        \"country_code\": \"US\",\n        \"description\": \"The American Wirehair tends to be a calm and tolerant cat who takes life as it comes. His favorite hobby is bird-watching from a sunny windowsill, and his hunting ability will stand you in good stead if insects enter the house.\",\n        \"life_span\": \"14 - 18\",\n        \"indoor\": 0,\n        \"lap\": 1,\n        \"alt_names\": \"\",\n        \"adaptability\": 5,\n        \"affection_level\": 5,\n        \"child_friendly\": 4,\n        \"dog_friendly\": 5,\n        \"energy_level\": 3,\n        \"grooming\": 1,\n        \"health_issues\": 3,\n        \"intelligence\": 3,\n        \"shedding_level\": 1,\n        \"social_needs\": 3,\n        \"stranger_friendly\": 3,\n        \"vocalisation\": 3,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 0,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/American_Wirehair\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"8D--jCd21\",\n        \"image\": {\n            \"id\": \"8D--jCd21\",\n            \"width\": 1280,\n            \"height\": 936,\n            \"url\": \"https://cdn2.thecatapi.com/images/8D--jCd21.jpg\"\n        }\n    },\n    {\n        \"weight\": {\n            \"imperial\": \"8 - 18\",\n            \"metric\": \"4 - 8\"\n        },\n        \"id\": \"bslo\",\n        \"name\": \"British Longhair\",\n        \"temperament\": \"Affectionate, Easy Going, Independent, Intelligent, Loyal, Social\",\n        \"origin\": \"United Kingdom\",\n        \"country_codes\": \"GB\",\n        \"country_code\": \"GB\",\n        \"description\": \"The British Longhair is a very laid-back relaxed cat, often perceived to be very independent although they will enjoy the company of an equally relaxed and likeminded cat. They are an affectionate breed, but very much on their own terms and tend to prefer to choose to come and sit with their owners rather than being picked up.\",\n        \"life_span\": \"12 - 14\",\n        \"indoor\": 0,\n        \"alt_names\": \"\",\n        \"adaptability\": 5,\n        \"affection_level\": 5,\n        \"child_friendly\": 4,\n        \"dog_friendly\": 5,\n        \"energy_level\": 4,\n        \"grooming\": 5,\n        \"health_issues\": 1,\n        \"intelligence\": 5,\n        \"shedding_level\": 1,\n        \"social_needs\": 3,\n        \"stranger_friendly\": 4,\n        \"vocalisation\": 1,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 0,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/British_Longhair\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"7isAO4Cav\",\n        \"image\": {\n            \"id\": \"7isAO4Cav\",\n            \"width\": 960,\n            \"height\": 960,\n            \"url\": \"https://cdn2.thecatapi.com/images/7isAO4Cav.jpg\"\n        }\n    },\n    {\n        \"weight\": {\n            \"imperial\": \"12 - 20\",\n            \"metric\": \"5 - 9\"\n        },\n        \"id\": \"bsho\",\n        \"name\": \"British Shorthair\",\n        \"cfa_url\": \"http://cfa.org/Breeds/BreedsAB/BritishShorthair.aspx\",\n        \"vetstreet_url\": \"http://www.vetstreet.com/cats/british-shorthair\",\n        \"vcahospitals_url\": \"https://vcahospitals.com/know-your-pet/cat-breeds/british-shorthair\",\n        \"temperament\": \"Affectionate, Easy Going, Gentle, Loyal, Patient, calm\",\n        \"origin\": \"United Kingdom\",\n        \"country_codes\": \"GB\",\n        \"country_code\": \"GB\",\n        \"description\": \"The British Shorthair is a very pleasant cat to have as a companion, ans is easy going and placid. The British is a fiercely loyal, loving cat and will attach herself to every one of her family members. While loving to play, she doesn't need hourly attention. If she is in the mood to play, she will find someone and bring a toy to that person. The British also plays well by herself, and thus is a good companion for single people.\",\n        \"life_span\": \"12 - 17\",\n        \"indoor\": 0,\n        \"lap\": 1,\n        \"alt_names\": \"Highlander, Highland Straight, Britannica\",\n        \"adaptability\": 5,\n        \"affection_level\": 4,\n        \"child_friendly\": 4,\n        \"dog_friendly\": 5,\n        \"energy_level\": 2,\n        \"grooming\": 2,\n        \"health_issues\": 2,\n        \"intelligence\": 3,\n        \"shedding_level\": 4,\n        \"social_needs\": 3,\n        \"stranger_friendly\": 2,\n        \"vocalisation\": 1,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 1,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/British_Shorthair\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"s4wQfYoEk\",\n        \"image\": {\n            \"id\": \"s4wQfYoEk\",\n            \"width\": 1600,\n            \"height\": 1457,\n            \"url\": \"https://cdn2.thecatapi.com/images/s4wQfYoEk.jpg\"\n        }\n    },\n    {\n        \"weight\": {\n            \"imperial\": \"4 - 10\",\n            \"metric\": \"2 - 5\"\n        },\n        \"id\": \"csho\",\n        \"name\": \"Colorpoint Shorthair\",\n        \"cfa_url\": \"http://cfa.org/Breeds/BreedsCJ/ColorpointShorthair.aspx\",\n        \"vcahospitals_url\": \"https://vcahospitals.com/know-your-pet/cat-breeds/colorpoint-shorthair\",\n        \"temperament\": \"Affectionate, Intelligent, Playful, Social\",\n        \"origin\": \"United States\",\n        \"country_codes\": \"US\",\n        \"country_code\": \"US\",\n        \"description\": \"Colorpoint Shorthairs are an affectionate breed, devoted and loyal to their people. Sensitive to their owner’s moods, Colorpoints are more than happy to sit at your side or on your lap and purr words of encouragement on a bad day. They will constantly seek out your lap whenever it is open and in the moments when your lap is preoccupied they will stretch out in sunny spots on the ground.\",\n        \"life_span\": \"12 - 16\",\n        \"indoor\": 0,\n        \"lap\": 1,\n        \"alt_names\": \"\",\n        \"adaptability\": 3,\n        \"affection_level\": 4,\n        \"child_friendly\": 4,\n        \"cat_friendly\": 3,\n        \"dog_friendly\": 4,\n        \"energy_level\": 4,\n        \"grooming\": 2,\n        \"health_issues\": 2,\n        \"intelligence\": 5,\n        \"shedding_level\": 3,\n        \"social_needs\": 4,\n        \"stranger_friendly\": 2,\n        \"vocalisation\": 5,\n        \"bidability\": 4,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 0,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/Colorpoint_Shorthair\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"oSpqGyUDS\",\n        \"image\": {\n            \"id\": \"oSpqGyUDS\",\n            \"width\": 1363,\n            \"height\": 1600,\n            \"url\": \"https://cdn2.thecatapi.com/images/oSpqGyUDS.jpg\"\n        }\n    },\n    {\n        \"weight\": {\n            \"imperial\": \"7 - 14\",\n            \"metric\": \"3 - 6\"\n        },\n        \"id\": \"esho\",\n        \"name\": \"Exotic Shorthair\",\n        \"cfa_url\": \"http://cfa.org/Breeds/BreedsCJ/Exotic.aspx\",\n        \"vetstreet_url\": \"http://www.vetstreet.com/cats/exotic-shorthair\",\n        \"vcahospitals_url\": \"https://vcahospitals.com/know-your-pet/cat-breeds/exotic-shorthair\",\n        \"temperament\": \"Affectionate, Sweet, Loyal, Quiet, Peaceful\",\n        \"origin\": \"United States\",\n        \"country_codes\": \"US\",\n        \"country_code\": \"US\",\n        \"description\": \"The Exotic Shorthair is a gentle friendly cat that has the same personality as the Persian. They love having fun, don’t mind the company of other cats and dogs, also love to curl up for a sleep in a safe place. Exotics love their own people, but around strangers they are cautious at first. Given time, they usually warm up to visitors.\",\n        \"life_span\": \"12 - 15\",\n        \"indoor\": 0,\n        \"lap\": 1,\n        \"alt_names\": \"Exotic\",\n        \"adaptability\": 5,\n        \"affection_level\": 5,\n        \"child_friendly\": 3,\n        \"dog_friendly\": 3,\n        \"energy_level\": 3,\n        \"grooming\": 2,\n        \"health_issues\": 3,\n        \"intelligence\": 3,\n        \"shedding_level\": 2,\n        \"social_needs\": 4,\n        \"stranger_friendly\": 2,\n        \"vocalisation\": 1,\n        \"experimental\": 0,\n        \"hairless\": 0,\n        \"natural\": 0,\n        \"rare\": 0,\n        \"rex\": 0,\n        \"suppressed_tail\": 0,\n        \"short_legs\": 0,\n        \"wikipedia_url\": \"https://en.wikipedia.org/wiki/Exotic_Shorthair\",\n        \"hypoallergenic\": 0,\n        \"reference_image_id\": \"YnPrYEmfe\",\n        \"image\": {\n            \"id\": \"YnPrYEmfe\",\n            \"width\": 1024,\n            \"height\": 768,\n            \"url\": \"https://cdn2.thecatapi.com/images/YnPrYEmfe.jpg\"\n        }\n    }\n]"
 						}
 					]
 				}
 			]
 		},
 		{
-			"name": "version",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{endpoint}}",
-					"host": [
-						"{{endpoint}}"
+			"name": "Favourites",
+			"item": [
+				{
+					"name": "/favourites",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"url": {
+							"raw": "{{endpoint}}v1/favourites",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"favourites"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/favourites",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{YOUR-API-KEY}}",
+										"description": "[required]"
+									}
+								],
+								"url": {
+									"raw": "{{endpoint}}v1/favourites",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"favourites"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Retry-After-Seconds",
+									"value": "22.19"
+								},
+								{
+									"key": "RateLimit-Limit",
+									"value": "120"
+								},
+								{
+									"key": "RateLimit-Remaining",
+									"value": "117"
+								},
+								{
+									"key": "RateLimit-Consumed",
+									"value": "3"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:39:57.354Z"
+								},
+								{
+									"key": "Pagination-Count",
+									"value": "1"
+								},
+								{
+									"key": "Pagination-Page",
+									"value": "0"
+								},
+								{
+									"key": "Pagination-Limit",
+									"value": "100"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "1034ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "130"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:39:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 232413577,\n        \"user_id\": \"1ejqec\",\n        \"image_id\": \"asf2\",\n        \"sub_id\": \"my-user-1234\",\n        \"created_at\": \"2023-10-28T17:39:28.000Z\",\n        \"image\": {}\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "/favourites/:favourite_id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"url": {
+							"raw": "{{endpoint}}v1/favourites/:favourite_id",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"favourites",
+								":favourite_id"
+							],
+							"variable": [
+								{
+									"key": "favourite_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/favourites",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"image_id\":asf2,\n\t\"sub_id\": \"my-user-1234\"\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}v1/favourites",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"favourites"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/favourites",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{YOUR-API-KEY}}",
+										"description": "[required]"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"image_id\":\"asf2\",\n\t\"sub_id\": \"my-user-1234\"\n}"
+								},
+								"url": {
+									"raw": "{{endpoint}}v1/favourites",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"favourites"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Retry-After-Seconds",
+									"value": "29.662"
+								},
+								{
+									"key": "RateLimit-Limit",
+									"value": "120"
+								},
+								{
+									"key": "RateLimit-Remaining",
+									"value": "118"
+								},
+								{
+									"key": "RateLimit-Consumed",
+									"value": "2"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:39:57.354Z"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "910ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "36"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:39:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"SUCCESS\",\n    \"id\": 232413577\n}"
+						}
+					]
+				},
+				{
+					"name": "/favourites/:favourite_id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"url": {
+							"raw": "{{endpoint}}v1/favourites/:favourite_id",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"favourites",
+								":favourite_id"
+							],
+							"variable": [
+								{
+									"key": "favourite_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votes",
+			"item": [
+				{
+					"name": "/votes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"url": {
+							"raw": "{{endpoint}}v1/votes",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"votes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/votes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{YOUR-API-KEY}}",
+										"description": "[required]"
+									}
+								],
+								"url": {
+									"raw": "{{endpoint}}v1/votes",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"votes"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Retry-After-Seconds",
+									"value": "60"
+								},
+								{
+									"key": "RateLimit-Limit",
+									"value": "120"
+								},
+								{
+									"key": "RateLimit-Remaining",
+									"value": "119"
+								},
+								{
+									"key": "RateLimit-Consumed",
+									"value": "1"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:39:57.354Z"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Pagination-Count",
+									"value": "1"
+								},
+								{
+									"key": "Pagination-Page",
+									"value": "0"
+								},
+								{
+									"key": "Pagination-Limit",
+									"value": "100"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "1220ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "139"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:38:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1120951,\n        \"image_id\": \"asf2\",\n        \"sub_id\": \"my-user-1234\",\n        \"created_at\": \"2023-10-28T17:29:28.000Z\",\n        \"value\": 1,\n        \"country_code\": \"AU\",\n        \"image\": {}\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "/votes/:vote_id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"url": {
+							"raw": "{{endpoint}}v1/votes/:vote_id",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"votes",
+								":vote_id"
+							],
+							"variable": [
+								{
+									"key": "vote_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/votes",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"image_id\":\"asf2\",\n\t\"sub_id\": \"my-user-1234\",\n    \"value\":1\n}"
+						},
+						"url": {
+							"raw": "{{endpoint}}v1/votes",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"votes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/votes",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{YOUR-API-KEY}}",
+										"description": "[required]"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"image_id\":\"asf2\",\n\t\"sub_id\": \"my-user-1234\",\n    \"value\":1\n}"
+								},
+								"url": {
+									"raw": "{{endpoint}}v1/votes",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"votes"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Retry-After-Seconds",
+									"value": "46.712"
+								},
+								{
+									"key": "RateLimit-Limit",
+									"value": "120"
+								},
+								{
+									"key": "RateLimit-Remaining",
+									"value": "118"
+								},
+								{
+									"key": "RateLimit-Consumed",
+									"value": "2"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "2023-10-29T04:30:14.733Z"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "1304ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "106"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:29:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"SUCCESS\",\n    \"id\": 1120951,\n    \"image_id\": \"asf2\",\n    \"sub_id\": \"my-user-1234\",\n    \"value\": 1,\n    \"country_code\": \"AU\"\n}"
+						}
+					]
+				},
+				{
+					"name": "/votes/:vote_id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{YOUR-API-KEY}}",
+								"description": "[required]"
+							}
+						],
+						"url": {
+							"raw": "{{endpoint}}v1/vote/:vote_id",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"vote",
+								":vote_id"
+							],
+							"variable": [
+								{
+									"key": "vote_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhooks",
+			"item": [
+				{
+					"name": "Create Webhook",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{access_key}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Charef\",\n    \"url\": \"https://webhook.site/8ff\",\n    \"events\": [\"favourite.created\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}v1/webhooks",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"webhooks"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Webhook",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Charef\",\n    \"url\": \"https://webhook.site/8ff\",\n    \"events\": [\"favourite.created\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{endpoint}}v1/webhooks",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"webhooks"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "X-Response-Time",
+									"value": "1214ms"
+								},
+								{
+									"key": "Content-Length",
+									"value": "475"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 03 Dec 2022 22:35:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"app\": {\n        \"createdAt\": \"2022-11-28T12:45:47.677Z\",\n        \"id\": \"app_2IB0DHxPDmSMYfIO2hyPwCiVsRx\",\n        \"metadata\": {},\n        \"name\": \"Charef\",\n        \"uid\": \"1frbda\",\n        \"updatedAt\": \"2022-11-28T12:45:47.677Z\"\n    },\n    \"endpoint\": {\n        \"channels\": null,\n        \"createdAt\": \"2022-12-03T22:35:32.993Z\",\n        \"description\": \"\",\n        \"disabled\": false,\n        \"filterTypes\": [\n            \"favourite.created\"\n        ],\n        \"id\": \"ep_2IQHYL2Cxdkrqo1ukzaKTDViMhx\",\n        \"metadata\": null,\n        \"rateLimit\": null,\n        \"uid\": null,\n        \"updatedAt\": \"2022-12-03T22:35:32.993Z\",\n        \"url\": \"https://webhook.site/8ff\",\n        \"version\": 1\n    }\n}"
+						}
 					]
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Facts",
+			"item": [
+				{
+					"name": "Get Random Fact(s)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}v1/facts",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Page of results to paginate through",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"description": "1 to 10",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "RAND",
+									"description": "ASC DESC or RAND",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get one or more Random facts and the Species. For more at a time just update the 'limit' field"
+					},
+					"response": [
+						{
+							"name": "1 random fact",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{endpoint}}v1/facts",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"facts"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "x-dns-prefetch-control",
+									"value": "off"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "x-download-options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "vary",
+									"value": "Origin"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "pagination-count",
+									"value": "711"
+								},
+								{
+									"key": "pagination-page",
+									"value": "0"
+								},
+								{
+									"key": "pagination-limit",
+									"value": "1"
+								},
+								{
+									"key": "access-control-expose-headers",
+									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+								},
+								{
+									"key": "x-response-time",
+									"value": "182ms"
+								},
+								{
+									"key": "X-Cloud-Trace-Context",
+									"value": "50ca0e8d0728c4655687fd4cee3b3d7b"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 07:40:05 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Google Frontend"
+								},
+								{
+									"key": "Content-Length",
+									"value": "205"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"MBM2F\",\n        \"fact\": \"Cornish Rex cats have a relatively long lifespan compared to other cat breeds. They can live up to 15 years or more with proper care.\",\n        \"breed_id\": \"crex\",\n        \"title\": \"10. Long Lifespan\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Random Fact(s) About Breed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}v1/breeds/:breed_id/facts",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"breeds",
+								":breed_id",
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "breed_id",
+									"value": "ragd"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Random Fact(s) About Breed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{endpoint}}v1/breeds/:breed_id/facts",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"breeds",
+										":breed_id",
+										"facts"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "breed_id",
+											"value": "ragd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "x-dns-prefetch-control",
+									"value": "off"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "x-download-options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "vary",
+									"value": "Origin"
+								},
+								{
+									"key": "retry-after-seconds",
+									"value": "16.301"
+								},
+								{
+									"key": "ratelimit-limit",
+									"value": "120"
+								},
+								{
+									"key": "ratelimit-remaining",
+									"value": "117"
+								},
+								{
+									"key": "ratelimit-consumed",
+									"value": "3"
+								},
+								{
+									"key": "ratelimit-reset",
+									"value": "2023-10-29T04:01:39.986Z"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "pagination-count",
+									"value": "30"
+								},
+								{
+									"key": "pagination-page",
+									"value": "0"
+								},
+								{
+									"key": "pagination-limit",
+									"value": "1"
+								},
+								{
+									"key": "access-control-expose-headers",
+									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+								},
+								{
+									"key": "x-response-time",
+									"value": "247ms"
+								},
+								{
+									"key": "X-Cloud-Trace-Context",
+									"value": "3ab5b6837d8f02b75827cf9a191a5972"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:01:23 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Google Frontend"
+								},
+								{
+									"key": "Content-Length",
+									"value": "119"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"38GY9\",\n        \"fact\": \"Ragdolls are typically quiet cats and have a gentle voice.\",\n        \"breed_id\": \"ragd\",\n        \"title\": \"Fact 8\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Ordered Fact(s) About Breed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}v1/breeds/:breed_id/facts?limit=5&page=0&order=ASC",
+							"host": [
+								"{{endpoint}}v1"
+							],
+							"path": [
+								"breeds",
+								":breed_id",
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "order",
+									"value": "ASC"
+								}
+							],
+							"variable": [
+								{
+									"key": "breed_id",
+									"value": "ragd"
+								}
+							]
+						},
+						"description": "Get one or more facts about the Species. For more at a time just update the 'limit' field, and to paginate through them just increment the 'page' field.\n\nThe response headers have the pagination details, such as how many there are in total, what page you're on, and the current amount per page.\n\nTo redorder change the order to ASC for ascending order, DESC for descending, and RAND for random order."
+					},
+					"response": [
+						{
+							"name": "Get Ordered Fact(s) About Breed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{endpoint}}v1/breeds/:breed_id/facts?limit=5&page=0&order=ASC",
+									"host": [
+										"{{endpoint}}v1"
+									],
+									"path": [
+										"breeds",
+										":breed_id",
+										"facts"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "5"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "order",
+											"value": "ASC"
+										}
+									],
+									"variable": [
+										{
+											"key": "breed_id",
+											"value": "ragd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "x-dns-prefetch-control",
+									"value": "off"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "x-download-options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "vary",
+									"value": "Origin"
+								},
+								{
+									"key": "retry-after-seconds",
+									"value": "33.954"
+								},
+								{
+									"key": "ratelimit-limit",
+									"value": "120"
+								},
+								{
+									"key": "ratelimit-remaining",
+									"value": "115"
+								},
+								{
+									"key": "ratelimit-consumed",
+									"value": "5"
+								},
+								{
+									"key": "ratelimit-reset",
+									"value": "2023-10-29T04:03:26.716Z"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "pagination-count",
+									"value": "30"
+								},
+								{
+									"key": "pagination-page",
+									"value": "0"
+								},
+								{
+									"key": "pagination-limit",
+									"value": "5"
+								},
+								{
+									"key": "access-control-expose-headers",
+									"value": "Pagination-Count, Pagination-Page, Pagination-Limit"
+								},
+								{
+									"key": "x-response-time",
+									"value": "182ms"
+								},
+								{
+									"key": "X-Cloud-Trace-Context",
+									"value": "331c8d16b03bf66b4fe4e40c86dfc6a1"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Oct 2023 04:02:52 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Google Frontend"
+								},
+								{
+									"key": "Content-Length",
+									"value": "753"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"JO85Z\",\n        \"fact\": \"Ragdoll cats were first bred in the 1960s in California, USA.\",\n        \"breed_id\": \"ragd\",\n        \"title\": \"Origin\"\n    },\n    {\n        \"id\": \"ADPHH\",\n        \"fact\": \"Ragdolls are known for their calm and gentle temperament, making them great companions.\",\n        \"breed_id\": \"ragd\",\n        \"title\": \"Temperament\"\n    },\n    {\n        \"id\": \"269Q9\",\n        \"fact\": \"Ragdolls are one of the largest domestic cat breeds, with males weighing between 15-20 pounds and females weighing between 10-15 pounds.\",\n        \"breed_id\": \"ragd\",\n        \"title\": \"Size\"\n    },\n    {\n        \"id\": \"DE3CY\",\n        \"fact\": \"Ragdolls have a semi-long, silky coat that requires minimal grooming.\",\n        \"breed_id\": \"ragd\",\n        \"title\": \"Coat\"\n    },\n    {\n        \"id\": \"ADM62\",\n        \"fact\": \"Ragdolls come in various color patterns, including seal, blue, chocolate, lilac, and more.\",\n        \"breed_id\": \"ragd\",\n        \"title\": \"Color Patterns\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"description": "Premium feature: [https://portal.thatapicompany.com/catalog](https://portal.thatapicompany.com/catalog)\n\nReturns an evergrowing list of Facts about Cats, Dogs and their different breeds. These have been checked for accuracy and to be safe for schools."
 		}
 	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{YOUR-API-KEY}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -2888,7 +3172,8 @@
 	"variable": [
 		{
 			"key": "YOUR-API-KEY",
-			"value": "example-api-key"
+			"value": "example-api-key",
+			"type": "string"
 		}
 	]
 }
