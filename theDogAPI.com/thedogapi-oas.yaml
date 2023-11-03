@@ -31,7 +31,7 @@ info:
 
     Just signup for an API Key from https://thedogapi.com for free. We're
     looking forward to seeing what you build!
-  version: 1.0.0
+  version: 1.6.1
 servers:
   - url: http://{{endpoint}}v1
 components:
