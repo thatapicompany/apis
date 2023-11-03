@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Cat API
+  title: Dog API
   description: >-
     ![image](https://s3-us-west-2.amazonaws.com/tdapi-live/static/tie-square-135.png)
 
 
     ## An open, free, read & write API all about Dogs
 
-    The Cat API gives you access to 1000's of dog images, and breeds.
+    The Dog API gives you access to 1000's of dog images, and breeds.
 
     - Upload your own images
 
@@ -29,7 +29,7 @@ info:
 
     ## How do i get access?
 
-    Just signup for an API Key from https://thecatapi.com for free. We're
+    Just signup for an API Key from https://thedogapi.com for free. We're
     looking forward to seeing what you build!
   version: 1.0.0
 servers:
