@@ -10,35 +10,27 @@ info:
     name: Terms of Use
     url: https://thecatapi.com/terms
   description: >-
-    ![image](https://thecatapi.com/_app/immutable/assets/thecatapi-logo.78868573.svg)
+    ![cat-api-logo](https://thecatapi.com/_app/immutable/assets/thecatapi-logo.78868573.svg)
 
 
-    ## An open, free, read & write API all about Dogs
+    ## An open, free, read & write API all about Cats
 
-    The Cat API gives you access to 1000's of dog images, and breeds.
+    The Cat API gives you access to 10000's of Cat images, and breeds.
 
-    - Upload your own images
+    - Upload your own Images
 
-    - Detailed info on all the Breeds
+    - Get detailed info on all Cat Breeds
 
-    - Favourite or Vote on images
+    - Allow your Users to Favourite or Vote on Images
 
-    - Get stats on your requests
-
-    - Save a custom value with each request
-
-
-    ## How is this free?
-
-    Our goal is to create free, fun & useful public service API's, helping
-    people learn to code, create awesome projects, and be a stable fixture in a
-    turbulent world.
+    - Save a custom value with each request so you can match data to your Users
 
 
     ## How do i get access?
 
-    Just signup for an API Key from https://thecatapi.com for free. We're
-    looking forward to seeing what you build!
+    Just sign up for an API Key from https://thecatapi.com for free. We're looking forward to seeing what you build!
+
+    Don't forget to checkout it's sister API - TheDogAPI.com
   version: 1.6.3
 servers:
   - url: http://api.thecatapi.com/v1
@@ -75,7 +67,7 @@ tags:
 paths:
   /images/search:
     get:
-      operationId: Images-SearchOrGetRandom
+      operationId: Images-ListSearchOrRandom
       tags:
         - Images
       summary: /images/search

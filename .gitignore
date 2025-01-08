@@ -59,7 +59,6 @@ typings/
 
 dist/
 releases/
-images/
 .aws/
 .ignore/
 aws_config.json
