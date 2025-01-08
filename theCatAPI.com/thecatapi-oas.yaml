@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Cat API
   description: >-
-    ![image](https://s3-us-west-2.amazonaws.com/tdapi-live/static/tie-square-135.png)
+    ![image](https://thecatapi.com/_app/immutable/assets/thecatapi-logo.78868573.svg)
 
 
     ## An open, free, read & write API all about Dogs
