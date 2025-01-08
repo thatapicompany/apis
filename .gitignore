@@ -74,3 +74,5 @@ dist/
 
 .DS_Store
 .vscode/settings.json
+.openapi-generator-ignore
+theCatAPI.com/the-cat-api-doc-html-2/

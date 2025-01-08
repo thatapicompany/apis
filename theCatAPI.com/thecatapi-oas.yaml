@@ -1,6 +1,14 @@
 openapi: 3.0.0
 info:
   title: Cat API
+  termsOfService: https://thecatapi.com/terms
+  contact: 
+    name: "ThatAPICompany"
+    url: https://thatapicompany.com/about-that-api-company/
+    email: aden@thatapicompany.com
+  license:
+    name: Terms of Use
+    url: https://thecatapi.com/terms
   description: >-
     ![image](https://thecatapi.com/_app/immutable/assets/thecatapi-logo.78868573.svg)
 
@@ -31,7 +39,7 @@ info:
 
     Just signup for an API Key from https://thecatapi.com for free. We're
     looking forward to seeing what you build!
-  version: 1.6.2
+  version: 1.6.3
 servers:
   - url: http://api.thecatapi.com/v1
 components:
@@ -40,32 +48,39 @@ components:
       type: http
       scheme: noauth
     apikeyAuth:
-      type: http
-      scheme: apikey
+      type: apiKey
+      in: header
+      name: X-API-KEY
 security:
   - apikeyAuth: []
 tags:
   - name: Images
+    description: Endpoints to get or upload Images
   - name: Breeds
+    description: Endpoints to get information about different Breeds
   - name: Favourites
+    description: Endpoints to save or get Favourited Images by your Users
   - name: Votes
+    description: Endpoints to let your Users Vote on Images
   - name: Webhooks
+    description: Endpoints allowing the setting up Webhooks for events in your Account
   - name: Facts
     description: >-
       Premium feature:
       [https://thecatapi.com/#pricing](https://thecatapi.com/#pricing)
 
 
-      Returns an evergrowing list of Facts about Cats, Dogs and their different
+      Returns an ever-growing list of Facts about Cats, Dogs and their different
       breeds. These have been checked for accuracy and to be safe for schools.
 paths:
   /images/search:
     get:
+      operationId: Images-SearchOrGetRandom
       tags:
         - Images
       summary: /images/search
       description: >-
-        Searchs all approved images. Default is to reutrn RANDOM images, but
+        Searches or returns Random selection from all approved images. Default is to return RANDOM images, but
         with an API-Key you can use 'order=DESC' or 'order=ASC' along with the
         'page' and 'limit' parameters to paginate through them in the order they
         were approved.
@@ -99,7 +114,7 @@ paths:
           schema:
             type: string
           description: >-
-            [optional] a comma separated strig of types to return e.g. jpg,png
+            [optional] a comma separated string of types to return e.g. jpg,png
             for static, or gif for gifs
           example: jpg
         - name: format
@@ -179,7 +194,7 @@ paths:
               schema:
                 type: object
               example:
-                - id: Hylo4Snaf
+                  id: Hylo4Snaf
                   url: https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg
                   width: 1200
                   height: 922
@@ -972,10 +987,20 @@ paths:
             application/json: {}
   /breeds:
     get:
+      security:
+        - noauthAuth: []
       tags:
         - Breeds
       summary: /breeds
       parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          description: |
+            [required] API key to access the facts
+          example: 'YOUR-API-KEY'
+          required: true
         - name: Content-Type
           in: header
           schema:
