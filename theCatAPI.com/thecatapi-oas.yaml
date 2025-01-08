@@ -31,9 +31,9 @@ info:
 
     Just signup for an API Key from https://thecatapi.com for free. We're
     looking forward to seeing what you build!
-  version: 1.6.1
+  version: 1.6.2
 servers:
-  - url: http://{{endpoint}}v1
+  - url: http://api.thecatapi.com/v1
 components:
   securitySchemes:
     noauthAuth:
@@ -53,7 +53,7 @@ tags:
   - name: Facts
     description: >-
       Premium feature:
-      [https://portal.thatapicompany.com/catalog](https://portal.thatapicompany.com/catalog)
+      [https://thecatapi.com/#pricing](https://thecatapi.com/#pricing)
 
 
       Returns an evergrowing list of Facts about Cats, Dogs and their different
@@ -87,7 +87,7 @@ paths:
           schema:
             type: string
           description: '[optional] without it only the a basic set of images can be searched'
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: size
           in: query
           schema:
@@ -289,7 +289,7 @@ paths:
             type: string
           description: |
             [optional]  will save this request to your account analytics
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
       responses:
         '200':
           description: OK
@@ -445,7 +445,7 @@ paths:
           required: true
           description: |
             - will return all the images from your account
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: limit
           in: query
           schema:
@@ -754,7 +754,7 @@ paths:
             type: string
           required: true
           description: '- saves the uploaded image to your account.'
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
       responses:
         '201':
           description: Created
@@ -861,7 +861,7 @@ paths:
           in: header
           schema:
             type: string
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: image_id
           in: path
           schema:
@@ -923,7 +923,7 @@ paths:
           description: |+
             - for now, you can only tag your own images with a breed
 
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: image_id
           in: path
           schema:
@@ -954,7 +954,7 @@ paths:
           required: true
           description: |
             - only you can delete breeds from your images
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: image_id
           in: path
           schema:
@@ -1826,7 +1826,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
       responses:
         '200':
           description: OK
@@ -1952,7 +1952,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
       responses:
         '200':
           description: OK
@@ -2053,7 +2053,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: favourite_id
           in: path
           schema:
@@ -2080,7 +2080,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: favourite_id
           in: path
           schema:
@@ -2108,7 +2108,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
       responses:
         '200':
           description: OK
@@ -2238,7 +2238,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
       responses:
         '201':
           description: Created
@@ -2343,7 +2343,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: vote_id
           in: path
           schema:
@@ -2371,7 +2371,7 @@ paths:
             type: string
           required: true
           description: ''
-          example: '{{YOUR-API-KEY}}'
+          example: 'YOUR-API-KEY'
         - name: vote_id
           in: path
           schema:
