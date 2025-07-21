@@ -2,21 +2,18 @@ openapi: 3.0.0
 info:
   title: Dog API
   description: >-
-    ![image](https://s3-us-west-2.amazonaws.com/tdapi-live/static/tie-square-135.png)
+    ![image](https://i0.wp.com/thatapicompany.com/wp-content/uploads/2023/10/theDogAPI-A-01.jpg?resize=400%2C400&ssl=1)
 
 
-    ## An open, free, read & write API all about Dogs
+    ## An open, read & write API all about Dogs
 
     The Dog API gives you access to 1000's of dog images, and breeds.
 
+    - 
     - Upload your own images
-
     - Detailed info on all the Breeds
-
     - Favourite or Vote on images
-
     - Get stats on your requests
-
     - Save a custom value with each request
 
 
@@ -26,30 +23,219 @@ info:
     people learn to code, create awesome projects, and be a stable fixture in a
     turbulent world.
 
+    ## What are the premium plans?
+
+    Extra fields for the Breeds, and extra endpoints. Check out the features in the paid plans over at https://thedogapi.com
 
     ## How do i get access?
 
-    Just signup for an API Key from https://thedogapi.com for free. We're
-    looking forward to seeing what you build!
+    Just signup for an API Key from https://thedogapi.com. We're looking forward to seeing what you build!
+
   version: 1.6.1
+  license:
+    name: Terms of Service
+    url: https://thedogapi.com/terms
 servers:
-  - url: http://{{endpoint}}v1
+  - url: https://api.thedogapi.com/v1
 components:
   securitySchemes:
-    noauthAuth:
-      type: http
-      scheme: noauth
     apikeyAuth:
-      type: http
-      scheme: apikey
+      type: apiKey
+      in: header
+      name: x-api-key
+  schemas:
+    Breed:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the breed
+          example: 235
+        name:
+          type: string
+          description: Name of the breed
+          example: "Spanish Water Dog"
+        weight:
+          type: object
+          properties:
+            imperial:
+              type: string
+              description: Weight in pounds
+              example: "30 - 50"
+            metric:
+              type: string
+              description: Weight in kilograms
+              example: "14 - 23"
+        height:
+          type: object
+          properties:
+            imperial:
+              type: string
+              description: Height in inches
+              example: "15.5 - 20"
+            metric:
+              type: string
+              description: Height in centimeters
+              example: "39 - 51"
+        life_span:
+          type: string
+          description: Average lifespan
+          example: "12 to 15 years"
+        breed_group:
+          type: string
+          description: AKC breed group classification
+          example: "Sporting"
+        bred_for:
+          type: string
+          description: Original purpose of the breed
+          example: "Coursing and hunting"
+        temperament:
+          type: string
+          description: Typical temperament traits
+          example: "Active, Energetic, Independent, Intelligent, Gentle"
+        origin:
+          type: string
+          description: Country or region of origin
+          example: "Spain"
+        country_codes:
+          type: string
+          description: ISO country codes
+          example: "ES"
+        country_code:
+          type: string
+          description: Primary country code
+          example: "ES"
+        description:
+          type: string
+          description: Detailed description of the breed
+          example: "The Spanish Water Dog is a versatile working dog with a curly, woolly coat."
+        alt_names:
+          type: string
+          description: Alternative names for the breed
+          example: "Perro de Agua Español"
+        wikipedia_url:
+          type: string
+          format: uri
+          description: Wikipedia page URL
+          example: "https://en.wikipedia.org/wiki/Spanish_Water_Dog"
+        cfa_url:
+          type: string
+          format: uri
+          description: Cat Fanciers Association URL
+        vetstreet_url:
+          type: string
+          format: uri
+          description: VetStreet information URL
+        vcahospitals_url:
+          type: string
+          format: uri
+          description: VCA Hospitals information URL
+        reference_image_id:
+          type: string
+          description: ID of the reference image for this breed
+          example: "abc123"
+        image:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "abc123"
+            width:
+              type: integer
+              example: 1200
+            height:
+              type: integer
+              example: 800
+            url:
+              type: string
+              format: uri
+              example: "https://cdn2.thedogapi.com/images/abc123.jpg"
+      required:
+        - id
+        - name
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the image
+          example: "Hylo4Snaf"
+        url:
+          type: string
+          format: uri
+          description: URL to the image
+          example: "https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg"
+        width:
+          type: integer
+          description: Image width in pixels
+          example: 1200
+        height:
+          type: integer
+          description: Image height in pixels
+          example: 922
+        mime_type:
+          type: string
+          description: MIME type of the image
+          example: "image/jpeg"
+        breeds:
+          type: array
+          description: Array of breeds associated with this image
+          items:
+            $ref: '#/components/schemas/Breed'
+        categories:
+          type: array
+          description: Array of categories for this image
+          items:
+            type: object
+        sub_id:
+          type: string
+          description: User-defined sub ID for tracking
+          example: "my-user-1234"
+        created_at:
+          type: string
+          format: date-time
+          description: When the image was created
+          example: "2018-05-11T01:50:29.000Z"
+        original_filename:
+          type: string
+          description: Original filename when uploaded
+          example: "my_dog_photo.jpg"
+        breed_ids:
+          type: array
+          description: Array of breed IDs
+          items:
+            type: integer
+        category_ids:
+          type: array
+          description: Array of category IDs
+          items:
+            type: integer
+        pending:
+          type: integer
+          description: Whether image is pending approval
+          enum: [0, 1]
+          example: 0
+        approved:
+          type: integer
+          description: Whether image is approved
+          enum: [0, 1]
+          example: 1
+      required:
+        - id
+        - url
 security:
   - apikeyAuth: []
 tags:
   - name: Images
+    description: Endpoints to get or upload Images
   - name: Breeds
+    description: Endpoints to get information about different Breeds
   - name: Favourites
+    description: Endpoints to save or get Favourited Images by your Users
   - name: Votes
+    description: Endpoints to let your Users Vote on Images
   - name: Webhooks
+    description: Endpoints allowing the setting up Webhooks for events in your Account
   - name: Facts
     description: >-
       Premium feature:
@@ -65,23 +251,15 @@ paths:
         - Images
       summary: /images/search
       description: >-
-        Searchs all approved images. Default is to reutrn RANDOM images, but
+        Searches all approved public images. Default is to return RANDOM images, but
         with an API-Key you can use 'order=DESC' or 'order=ASC' along with the
         'page' and 'limit' parameters to paginate through them in the order they
         were approved.
 
-
         Pagination-Count, Pagination-Page, and Pagination-Limit headers are
         present in the response so you know the total number of images that can
         be paginated through for the passed search filters.
-      security:
-        - noauthAuth: []
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -92,28 +270,28 @@ paths:
           in: query
           schema:
             type: string
-          description: '[optional] thumb , small, med or full - small is perfect for Discord'
-          example: med
+          description: '[optional] thumb , small, med or full - small is perfect for Discord. Default is full'
+          example: full
         - name: mime_types
           in: query
           schema:
             type: string
           description: >-
-            [optional] a comma separated strig of types to return e.g. jpg,png
-            for static, or gif for gifs
-          example: jpg
+            [optional] a comma separated string of types to return e.g. jpg,png
+            for static, or gif for gifs. Default will return any mime_type
+          example: jpg,png
         - name: format
           in: query
           schema:
             type: string
-          description: '[optional] json | src'
+          description: '[optional] json | src - Default is json'
           example: json
         - name: has_breeds
           in: query
           schema:
             type: boolean
-          description: '[optional] - only return images with breed data'
-          example: 'true'
+          description: '[optional] - only return images with breed data. Default false'
+          example: 'false'
         - name: order
           in: query
           schema:
@@ -137,152 +315,130 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Cache-Control:
-              schema:
-                type: string
-                example: post-check=0, pre-check=0
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: integer
-                example: '318'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Date:
-              schema:
-                type: string
-                example: Sun, 20 May 2018 05:20:42 GMT
-            Expires:
-              schema:
-                type: string
-                example: Tue, 03 Jul 2001 06:00:00 GMT
-            Last-Modified:
-              schema:
-                type: string
-                example: Sun May 20 2018 15:20:42 GMT+1000 (AEST)
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            X-Response-Time:
-              schema:
-                type: string
-                example: 66ms
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
               example:
-                - id: Hylo4Snaf
-                  url: https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg
-                  width: 1200
-                  height: 922
-                  mime_type: image/jpeg
+                - id: "6euYVVE_u"
+                  url: "https://cdn2.thedogapi.com/images/6euYVVE_u.jpg"
+                  width: 1024
+                  height: 685
                   breeds:
-                    - id: 235
-                      name: Spanish Water Dog
-                      weight: "\_30 to 50 pounds"
-                      height: 16 to 20 inches at the shoulder
-                      life_span: 12 to 15 years
-                      breed_group: Sporting
-                  categories: []
+                    - weight:
+                        imperial: "23 - 28"
+                        metric: "10 - 13"
+                      height:
+                        imperial: "15.5 - 20"
+                        metric: "39 - 51"
+                      id: 111
+                      name: "Finnish Spitz"
+                      bred_for: "Hunting birds, small mammals"
+                      breed_group: "Non-Sporting"
+                      life_span: "12 - 15 years"
+                      temperament: "Playful, Loyal, Independent, Intelligent, Happy, Vocal"
+                      reference_image_id: "3PjHlQbkV"
         '401':
           description: Unauthorized
-          headers:
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: integer
-                example: '141'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Date:
-              schema:
-                type: string
-                example: Sun, 19 Aug 2018 12:40:57 GMT
-            Server:
-              schema:
-                type: number
-                example: Apache/2.4.33 (Amazon)
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
           content:
             application/json:
               schema:
                 type: object
               example:
-                - id: Hylo4Snaf
-                  url: https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg
-                  width: 1200
-                  height: 922
-                  mime_type: image/jpeg
-                  breeds:
-                    - id: 235
-                      name: Spanish Water Dog
-                      weight: ' 30 to 50 pounds'
-                      height: 16 to 20 inches at the shoulder
-                      life_span: 12 to 15 years
-                      breed_group: Sporting
-                  categories: []
-                - id: Hylo4Snaf
-                  url: https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg
-                  width: 1200
-                  height: 922
-                  mime_type: image/jpeg
-                  breeds:
-                    - id: 235
-                      name: Spanish Water Dog
-                      weight: ' 30 to 50 pounds'
-                      height: 16 to 20 inches at the shoulder
-                      life_span: 12 to 15 years
-                      breed_group: Sporting
-                  categories: []
-  /images/BkIEhN3pG:
+                message: "Authentication failed"
+  /images/{image_id}:
+    get:
+      tags:
+        - Images
+      summary: /images/:image_id
+      description: Get a specific image by its ID. This can either be a public image, or one you have uploaded.
+      parameters:
+        - name: image_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: The ID of the image to retrieve
+          example: "6euYVVE_u"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+              example:
+                id: "6euYVVE_u"
+                url: "https://cdn2.thedogapi.com/images/6euYVVE_u.jpg"
+                width: 1024
+                height: 685
+                breeds:
+                  - weight:
+                      imperial: "23 - 28"
+                      metric: "10 - 13"
+                    height:
+                      imperial: "15.5 - 20"
+                      metric: "39 - 51"
+                    id: 111
+                    name: "Finnish Spitz"
+                    bred_for: "Hunting birds, small mammals"
+                    breed_group: "Non-Sporting"
+                    life_span: "12 - 15 years"
+                    temperament: "Playful, Loyal, Independent, Intelligent, Happy, Vocal"
+                    reference_image_id: "3PjHlQbkV"
+        '404':
+          description: Image not found
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Image not found"
+    delete:
+      description: Can only delete images you have uploaded.
+      tags:
+        - Images
+      summary: /images/:image_id
+      security:
+        - apikeyAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: '{{YOUR-API-KEY}}'
+        - name: image_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: dMsUj1-nz
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /images/{image_id}/analysis:
     get:
       tags:
         - Images
       summary: /images/:image_id/analysis
       description: Get the raw analysis results for any uploaded image
-      security:
-        - noauthAuth: []
       parameters:
+        - name: image_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: The ID of the image to analyze
+          example: "xxBaNrfM0"
         - name: x-api-key
           in: header
           schema:
@@ -293,63 +449,12 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 2826ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '1385'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:46:06 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  type: object
               example:
                 - labels:
                     - Name: Animal
@@ -422,22 +527,24 @@ paths:
                   vendor: AWS Rekognition
                   image_id: xxBaNrfM0
                   created_at: '2023-10-28T17:44:36.000Z'
-  /images/:
+        '404':
+          description: Image not found
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Image not found"
+  /images:
     get:
       tags:
         - Images
-      summary: /images/ (Your uploads)
+      summary: /images (Your uploads)
       description: >-
-        Only returns images from your account, uploaded via
-        'api/v1/images/upload'
+        Lists the images you have uploaded via the POST /images/upload endpoint
       security:
-        - noauthAuth: []
+        - apikeyAuth: []
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -471,35 +578,12 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            connection:
-              schema:
-                type: string
-                example: keep-alive
-            content-length:
-              schema:
-                type: integer
-                example: '2495'
-            content-type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            date:
-              schema:
-                type: string
-                example: Wed, 11 Apr 2018 12:37:55 GMT
-            vary:
-              schema:
-                type: string
-                example: Origin
-            x-response-time:
-              schema:
-                type: string
-                example: 110ms
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  type: object
               examples:
                 example-0:
                   summary: /images/
@@ -741,7 +825,7 @@ paths:
                     [optional] comma separated string of breed ids contained in
                     the image
       security:
-        - noauthAuth: []
+        - apikeyAuth: []
       parameters:
         - name: Content-Type
           in: header
@@ -758,79 +842,6 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: integer
-                example: '60'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '119'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '1'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:45:29.282Z'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 7625ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '176'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:44:36 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
@@ -844,48 +855,21 @@ paths:
                 original_filename: bl4.jpeg
                 pending: 0
                 approved: 1
-  /images/{image_id}:
-    delete:
-      tags:
-        - Images
-      summary: /images/:image_id
-      security:
-        - noauthAuth: []
-      parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: x-api-key
-          in: header
-          schema:
-            type: string
-          example: '{{YOUR-API-KEY}}'
-        - name: image_id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: dMsUj1-nz
-      responses:
-        '200':
-          description: Successful response
+        '404':
+          description: Image not found
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "Image not found"
   /images/{image_id}/breeds:
     get:
       tags:
         - Images
       summary: /images/:image_id/breeds
-      security:
-        - noauthAuth: []
+      description: Get the breed information associated with a specific image
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: image_id
           in: path
           schema:
@@ -900,6 +884,7 @@ paths:
       tags:
         - Images
       summary: /images/:image_id/breeds
+      description: Tag an image with a specific breed to associate them together
       requestBody:
         content:
           application/json:
@@ -908,7 +893,7 @@ paths:
               example:
                 breed_id: 10
       security:
-        - noauthAuth: []
+        - apikeyAuth: []
       parameters:
         - name: Content-Type
           in: header
@@ -939,8 +924,9 @@ paths:
       tags:
         - Images
       summary: /images/:image_id/breeds/:breed_id
+      description: Remove the association between an image and a specific breed
       security:
-        - noauthAuth: []
+        - apikeyAuth: []
       parameters:
         - name: Content-Type
           in: header
@@ -975,12 +961,8 @@ paths:
       tags:
         - Breeds
       summary: /breeds
+      description: Get a list of all available dog breeds with optional pagination
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: limit
           in: query
           schema:
@@ -994,207 +976,33 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: number
-                example: '32.112'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '118'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '2'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:24:17.564Z'
-            Pagination-Count:
-              schema:
-                type: integer
-                example: '67'
-            Pagination-Page:
-              schema:
-                type: integer
-                example: '0'
-            Pagination-Limit:
-              schema:
-                type: integer
-                example: '2'
-            Access-Control-Expose-Headers:
-              schema:
-                type: string
-                example: Pagination-Count, Pagination-Page, Pagination-Limit
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 920ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '2353'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:23:45 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: '#/components/schemas/Breed'
               example:
                 - weight:
-                    imperial: 7  -  10
-                    metric: 3 - 5
-                  id: abys
-                  name: Abyssinian
-                  cfa_url: http://cfa.org/Breeds/BreedsAB/Abyssinian.aspx
-                  vetstreet_url: http://www.vetstreet.com/cats/abyssinian
-                  vcahospitals_url: https://vcahospitals.com/know-your-pet/cat-breeds/abyssinian
-                  temperament: Active, Energetic, Independent, Intelligent, Gentle
-                  origin: Egypt
-                  country_codes: EG
-                  country_code: EG
-                  description: >-
-                    The Abyssinian is easy to care for, and a joy to have in
-                    your home. They’re affectionate cats and love both people
-                    and other animals.
-                  life_span: 14 - 15
-                  indoor: 0
-                  lap: 1
-                  alt_names: ''
-                  adaptability: 5
-                  affection_level: 5
-                  child_friendly: 3
-                  dog_friendly: 4
-                  energy_level: 5
-                  grooming: 1
-                  health_issues: 2
-                  intelligence: 5
-                  shedding_level: 2
-                  social_needs: 5
-                  stranger_friendly: 5
-                  vocalisation: 1
-                  experimental: 0
-                  hairless: 0
-                  natural: 1
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/Abyssinian_(cat)
-                  hypoallergenic: 0
-                  reference_image_id: 0XYvRd7oD
-                  image:
-                    id: 0XYvRd7oD
-                    width: 1204
-                    height: 1445
-                    url: https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg
-                - weight:
-                    imperial: 7 - 10
-                    metric: 3 - 5
-                  id: aege
-                  name: Aegean
-                  vetstreet_url: http://www.vetstreet.com/cats/aegean-cat
-                  temperament: Affectionate, Social, Intelligent, Playful, Active
-                  origin: Greece
-                  country_codes: GR
-                  country_code: GR
-                  description: >-
-                    Native to the Greek islands known as the Cyclades in the
-                    Aegean Sea, these are natural cats, meaning they developed
-                    without humans getting involved in their breeding. As a
-                    breed, Aegean Cats are rare, although they are numerous on
-                    their home islands. They are generally friendly toward
-                    people and can be excellent cats for families with children.
-                  life_span: 9 - 12
-                  indoor: 0
-                  alt_names: ''
-                  adaptability: 5
-                  affection_level: 4
-                  child_friendly: 4
-                  dog_friendly: 4
-                  energy_level: 3
-                  grooming: 3
-                  health_issues: 1
-                  intelligence: 3
-                  shedding_level: 3
-                  social_needs: 4
-                  stranger_friendly: 4
-                  vocalisation: 3
-                  experimental: 0
-                  hairless: 0
-                  natural: 0
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/Aegean_cat
-                  hypoallergenic: 0
-                  reference_image_id: ozEvzdVM-
-                  image:
-                    id: ozEvzdVM-
-                    width: 1200
-                    height: 800
-                    url: https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg
+                    imperial: "23 - 28"
+                    metric: "10 - 13"
+                  height:
+                    imperial: "15.5 - 20"
+                    metric: "39 - 51"
+                  id: 111
+                  name: "Finnish Spitz"
+                  bred_for: "Hunting birds, small mammals"
+                  breed_group: "Non-Sporting"
+                  life_span: "12 - 15 years"
+                  temperament: "Playful, Loyal, Independent, Intelligent, Happy, Vocal"
+                  reference_image_id: "3PjHlQbkV"
   /breeds/{breed_id}:
     get:
       tags:
         - Breeds
       summary: /breeds/:breed_id
-      security:
-        - noauthAuth: []
+      description: Get detailed information about a specific dog breed
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: breed_id
           in: path
           schema:
@@ -1203,43 +1011,24 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: integer
-                example: '187'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Date:
-              schema:
-                type: string
-                example: Sat, 19 May 2018 12:51:33 GMT
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            X-Response-Time:
-              schema:
-                type: string
-                example: 66ms
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Breed'
               example:
-                id: 2
-                name: Afghan Hound
-                weight: "\_50 to 60 pounds"
-                height: 25 to 27 inches at the shoulder
-                life_span: 10 to 13 years
-                bred_for: Coursing and hunting
-                breed_group: Hound
+                weight:
+                  imperial: "23 - 28"
+                  metric: "10 - 13"
+                height:
+                  imperial: "15.5 - 20"
+                  metric: "39 - 51"
+                id: 111
+                name: "Finnish Spitz"
+                bred_for: "Hunting birds, small mammals"
+                breed_group: "Non-Sporting"
+                life_span: "12 - 15 years"
+                temperament: "Playful, Loyal, Independent, Intelligent, Happy, Vocal"
+                reference_image_id: "3PjHlQbkV"
   /breeds/{breed_id}/facts:
     get:
       tags:
@@ -1278,140 +1067,52 @@ paths:
           schema:
             type: string
           required: true
-          example: ragd
+          example: 111
       responses:
         '200':
           description: OK
-          headers:
-            x-dns-prefetch-control:
-              schema:
-                type: string
-                example: 'off'
-            x-frame-options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            strict-transport-security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            x-download-options:
-              schema:
-                type: string
-                example: noopen
-            x-content-type-options:
-              schema:
-                type: string
-                example: nosniff
-            x-xss-protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            vary:
-              schema:
-                type: string
-                example: Origin
-            retry-after-seconds:
-              schema:
-                type: number
-                example: '33.954'
-            ratelimit-limit:
-              schema:
-                type: integer
-                example: '120'
-            ratelimit-remaining:
-              schema:
-                type: integer
-                example: '115'
-            ratelimit-consumed:
-              schema:
-                type: integer
-                example: '5'
-            ratelimit-reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:03:26.716Z'
-            content-type:
-              schema:
-                type: string
-                example: application/json
-            pagination-count:
-              schema:
-                type: integer
-                example: '30'
-            pagination-page:
-              schema:
-                type: integer
-                example: '0'
-            pagination-limit:
-              schema:
-                type: integer
-                example: '5'
-            access-control-expose-headers:
-              schema:
-                type: string
-                example: Pagination-Count, Pagination-Page, Pagination-Limit
-            x-response-time:
-              schema:
-                type: string
-                example: 182ms
-            X-Cloud-Trace-Context:
-              schema:
-                type: string
-                example: 331c8d16b03bf66b4fe4e40c86dfc6a1
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:02:52 GMT
-            Server:
-              schema:
-                type: string
-                example: Google Frontend
-            Content-Length:
-              schema:
-                type: integer
-                example: '753'
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  type: object
               example:
                 - id: JO85Z
                   fact: >-
-                    Ragdoll cats were first bred in the 1960s in California,
-                    USA.
-                  breed_id: ragd
+                    Finnish Spitz were originally bred in Finland for hunting birds and small mammals.
+                  breed_id: 111
                   title: Origin
                 - id: ADPHH
                   fact: >-
-                    Ragdolls are known for their calm and gentle temperament,
-                    making them great companions.
-                  breed_id: ragd
+                    Finnish Spitz are known for their playful, loyal, and intelligent temperament,
+                    making them excellent hunting companions.
+                  breed_id: 111
                   title: Temperament
                 - id: 269Q9
                   fact: >-
-                    Ragdolls are one of the largest domestic cat breeds, with
-                    males weighing between 15-20 pounds and females weighing
-                    between 10-15 pounds.
-                  breed_id: ragd
+                    Finnish Spitz are medium-sized dogs, with males weighing between 25-33 pounds
+                    and females weighing between 20-28 pounds.
+                  breed_id: 111
                   title: Size
                 - id: DE3CY
                   fact: >-
-                    Ragdolls have a semi-long, silky coat that requires minimal
-                    grooming.
-                  breed_id: ragd
+                    Finnish Spitz have a dense double coat that requires regular grooming,
+                    especially during shedding seasons.
+                  breed_id: 111
                   title: Coat
                 - id: ADM62
                   fact: >-
-                    Ragdolls come in various color patterns, including seal,
-                    blue, chocolate, lilac, and more.
-                  breed_id: ragd
-                  title: Color Patterns
+                    Finnish Spitz are known for their distinctive fox-like appearance and
+                    their unique barking style used for hunting.
+                  breed_id: 111
+                  title: Hunting Characteristics
   /breeds/search:
     get:
       tags:
         - Breeds
       summary: Search Breeds
+      description: Search for dog breeds by name with optional image attachment
       parameters:
         - name: q
           in: query
@@ -1428,398 +1129,33 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: integer
-                example: '60'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '119'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '1'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:25:59.859Z'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 1616ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '7922'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:25:00 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  $ref: '#/components/schemas/Breed'
               example:
                 - weight:
-                    imperial: 8 - 15
-                    metric: 4 - 7
-                  id: asho
-                  name: American Shorthair
-                  cfa_url: http://cfa.org/Breeds/BreedsAB/AmericanShorthair.aspx
-                  vetstreet_url: http://www.vetstreet.com/cats/american-shorthair
-                  vcahospitals_url: >-
-                    https://vcahospitals.com/know-your-pet/cat-breeds/american-shorthair
-                  temperament: Active, Curious, Easy Going, Playful, Calm
-                  origin: United States
-                  country_codes: US
-                  country_code: US
-                  description: >-
-                    The American Shorthair is known for its longevity, robust
-                    health, good looks, sweet personality, and amiability with
-                    children, dogs, and other pets.
-                  life_span: 15 - 17
-                  indoor: 0
-                  lap: 1
-                  alt_names: Domestic Shorthair
-                  adaptability: 5
-                  affection_level: 5
-                  child_friendly: 4
-                  dog_friendly: 5
-                  energy_level: 3
-                  grooming: 1
-                  health_issues: 3
-                  intelligence: 3
-                  shedding_level: 3
-                  social_needs: 4
-                  stranger_friendly: 3
-                  vocalisation: 3
-                  experimental: 0
-                  hairless: 0
-                  natural: 1
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/American_Shorthair
-                  hypoallergenic: 0
-                  reference_image_id: JFPROfGtQ
-                  image:
-                    id: JFPROfGtQ
-                    width: 1600
-                    height: 1200
-                    url: https://cdn2.thecatapi.com/images/JFPROfGtQ.jpg
-                - weight:
-                    imperial: 8 - 15
-                    metric: 4 - 7
-                  id: awir
-                  name: American Wirehair
-                  cfa_url: http://cfa.org/Breeds/BreedsAB/AmericanWirehair.aspx
-                  vetstreet_url: http://www.vetstreet.com/cats/american-wirehair
-                  temperament: >-
-                    Affectionate, Curious, Gentle, Intelligent, Interactive,
-                    Lively, Loyal, Playful, Sensible, Social
-                  origin: United States
-                  country_codes: US
-                  country_code: US
-                  description: >-
-                    The American Wirehair tends to be a calm and tolerant cat
-                    who takes life as it comes. His favorite hobby is
-                    bird-watching from a sunny windowsill, and his hunting
-                    ability will stand you in good stead if insects enter the
-                    house.
-                  life_span: 14 - 18
-                  indoor: 0
-                  lap: 1
-                  alt_names: ''
-                  adaptability: 5
-                  affection_level: 5
-                  child_friendly: 4
-                  dog_friendly: 5
-                  energy_level: 3
-                  grooming: 1
-                  health_issues: 3
-                  intelligence: 3
-                  shedding_level: 1
-                  social_needs: 3
-                  stranger_friendly: 3
-                  vocalisation: 3
-                  experimental: 0
-                  hairless: 0
-                  natural: 0
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/American_Wirehair
-                  hypoallergenic: 0
-                  reference_image_id: 8D--jCd21
-                  image:
-                    id: 8D--jCd21
-                    width: 1280
-                    height: 936
-                    url: https://cdn2.thecatapi.com/images/8D--jCd21.jpg
-                - weight:
-                    imperial: 8 - 18
-                    metric: 4 - 8
-                  id: bslo
-                  name: British Longhair
-                  temperament: >-
-                    Affectionate, Easy Going, Independent, Intelligent, Loyal,
-                    Social
-                  origin: United Kingdom
-                  country_codes: GB
-                  country_code: GB
-                  description: >-
-                    The British Longhair is a very laid-back relaxed cat, often
-                    perceived to be very independent although they will enjoy
-                    the company of an equally relaxed and likeminded cat. They
-                    are an affectionate breed, but very much on their own terms
-                    and tend to prefer to choose to come and sit with their
-                    owners rather than being picked up.
-                  life_span: 12 - 14
-                  indoor: 0
-                  alt_names: ''
-                  adaptability: 5
-                  affection_level: 5
-                  child_friendly: 4
-                  dog_friendly: 5
-                  energy_level: 4
-                  grooming: 5
-                  health_issues: 1
-                  intelligence: 5
-                  shedding_level: 1
-                  social_needs: 3
-                  stranger_friendly: 4
-                  vocalisation: 1
-                  experimental: 0
-                  hairless: 0
-                  natural: 0
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/British_Longhair
-                  hypoallergenic: 0
-                  reference_image_id: 7isAO4Cav
-                  image:
-                    id: 7isAO4Cav
-                    width: 960
-                    height: 960
-                    url: https://cdn2.thecatapi.com/images/7isAO4Cav.jpg
-                - weight:
-                    imperial: 12 - 20
-                    metric: 5 - 9
-                  id: bsho
-                  name: British Shorthair
-                  cfa_url: http://cfa.org/Breeds/BreedsAB/BritishShorthair.aspx
-                  vetstreet_url: http://www.vetstreet.com/cats/british-shorthair
-                  vcahospitals_url: >-
-                    https://vcahospitals.com/know-your-pet/cat-breeds/british-shorthair
-                  temperament: Affectionate, Easy Going, Gentle, Loyal, Patient, calm
-                  origin: United Kingdom
-                  country_codes: GB
-                  country_code: GB
-                  description: >-
-                    The British Shorthair is a very pleasant cat to have as a
-                    companion, ans is easy going and placid. The British is a
-                    fiercely loyal, loving cat and will attach herself to every
-                    one of her family members. While loving to play, she doesn't
-                    need hourly attention. If she is in the mood to play, she
-                    will find someone and bring a toy to that person. The
-                    British also plays well by herself, and thus is a good
-                    companion for single people.
-                  life_span: 12 - 17
-                  indoor: 0
-                  lap: 1
-                  alt_names: Highlander, Highland Straight, Britannica
-                  adaptability: 5
-                  affection_level: 4
-                  child_friendly: 4
-                  dog_friendly: 5
-                  energy_level: 2
-                  grooming: 2
-                  health_issues: 2
-                  intelligence: 3
-                  shedding_level: 4
-                  social_needs: 3
-                  stranger_friendly: 2
-                  vocalisation: 1
-                  experimental: 0
-                  hairless: 0
-                  natural: 1
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/British_Shorthair
-                  hypoallergenic: 0
-                  reference_image_id: s4wQfYoEk
-                  image:
-                    id: s4wQfYoEk
-                    width: 1600
-                    height: 1457
-                    url: https://cdn2.thecatapi.com/images/s4wQfYoEk.jpg
-                - weight:
-                    imperial: 4 - 10
-                    metric: 2 - 5
-                  id: csho
-                  name: Colorpoint Shorthair
-                  cfa_url: http://cfa.org/Breeds/BreedsCJ/ColorpointShorthair.aspx
-                  vcahospitals_url: >-
-                    https://vcahospitals.com/know-your-pet/cat-breeds/colorpoint-shorthair
-                  temperament: Affectionate, Intelligent, Playful, Social
-                  origin: United States
-                  country_codes: US
-                  country_code: US
-                  description: >-
-                    Colorpoint Shorthairs are an affectionate breed, devoted and
-                    loyal to their people. Sensitive to their owner’s moods,
-                    Colorpoints are more than happy to sit at your side or on
-                    your lap and purr words of encouragement on a bad day. They
-                    will constantly seek out your lap whenever it is open and in
-                    the moments when your lap is preoccupied they will stretch
-                    out in sunny spots on the ground.
-                  life_span: 12 - 16
-                  indoor: 0
-                  lap: 1
-                  alt_names: ''
-                  adaptability: 3
-                  affection_level: 4
-                  child_friendly: 4
-                  cat_friendly: 3
-                  dog_friendly: 4
-                  energy_level: 4
-                  grooming: 2
-                  health_issues: 2
-                  intelligence: 5
-                  shedding_level: 3
-                  social_needs: 4
-                  stranger_friendly: 2
-                  vocalisation: 5
-                  bidability: 4
-                  experimental: 0
-                  hairless: 0
-                  natural: 0
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/Colorpoint_Shorthair
-                  hypoallergenic: 0
-                  reference_image_id: oSpqGyUDS
-                  image:
-                    id: oSpqGyUDS
-                    width: 1363
-                    height: 1600
-                    url: https://cdn2.thecatapi.com/images/oSpqGyUDS.jpg
-                - weight:
-                    imperial: 7 - 14
-                    metric: 3 - 6
-                  id: esho
-                  name: Exotic Shorthair
-                  cfa_url: http://cfa.org/Breeds/BreedsCJ/Exotic.aspx
-                  vetstreet_url: http://www.vetstreet.com/cats/exotic-shorthair
-                  vcahospitals_url: >-
-                    https://vcahospitals.com/know-your-pet/cat-breeds/exotic-shorthair
-                  temperament: Affectionate, Sweet, Loyal, Quiet, Peaceful
-                  origin: United States
-                  country_codes: US
-                  country_code: US
-                  description: >-
-                    The Exotic Shorthair is a gentle friendly cat that has the
-                    same personality as the Persian. They love having fun, don’t
-                    mind the company of other cats and dogs, also love to curl
-                    up for a sleep in a safe place. Exotics love their own
-                    people, but around strangers they are cautious at first.
-                    Given time, they usually warm up to visitors.
-                  life_span: 12 - 15
-                  indoor: 0
-                  lap: 1
-                  alt_names: Exotic
-                  adaptability: 5
-                  affection_level: 5
-                  child_friendly: 3
-                  dog_friendly: 3
-                  energy_level: 3
-                  grooming: 2
-                  health_issues: 3
-                  intelligence: 3
-                  shedding_level: 2
-                  social_needs: 4
-                  stranger_friendly: 2
-                  vocalisation: 1
-                  experimental: 0
-                  hairless: 0
-                  natural: 0
-                  rare: 0
-                  rex: 0
-                  suppressed_tail: 0
-                  short_legs: 0
-                  wikipedia_url: https://en.wikipedia.org/wiki/Exotic_Shorthair
-                  hypoallergenic: 0
-                  reference_image_id: YnPrYEmfe
-                  image:
-                    id: YnPrYEmfe
-                    width: 1024
-                    height: 768
-                    url: https://cdn2.thecatapi.com/images/YnPrYEmfe.jpg
+                    imperial: "23 - 28"
+                    metric: "10 - 13"
+                  height:
+                    imperial: "15.5 - 20"
+                    metric: "39 - 51"
+                  id: 111
+                  name: "Finnish Spitz"
+                  bred_for: "Hunting birds, small mammals"
+                  breed_group: "Non-Sporting"
+                  life_span: "12 - 15 years"
+                  temperament: "Playful, Loyal, Independent, Intelligent, Happy, Vocal"
+                  reference_image_id: "3PjHlQbkV"
   /favourites:
     get:
       tags:
         - Favourites
       summary: /favourites
+      description: Get all your favourite images that you have saved
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -1830,110 +1166,23 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: number
-                example: '22.19'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '117'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '3'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:39:57.354Z'
-            Pagination-Count:
-              schema:
-                type: integer
-                example: '1'
-            Pagination-Page:
-              schema:
-                type: integer
-                example: '0'
-            Pagination-Limit:
-              schema:
-                type: integer
-                example: '100'
-            Access-Control-Expose-Headers:
-              schema:
-                type: string
-                example: Pagination-Count, Pagination-Page, Pagination-Limit
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 1034ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '130'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:39:35 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  type: object
               example:
                 - id: 232413577
                   user_id: 1ejqec
                   image_id: asf2
                   sub_id: my-user-1234
                   created_at: '2023-10-28T17:39:28.000Z'
-                  image: {}
     post:
       tags:
         - Favourites
       summary: /favourites
+      description: Save an image as a favourite to your account - with optional sub_id to represent your own user that is performing the action. You can then list /favourites using that sub_id as a filter.
       requestBody:
         content:
           application/json:
@@ -1956,79 +1205,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: number
-                example: '29.662'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '118'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '2'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:39:57.354Z'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 910ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '36'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:39:28 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
@@ -2041,12 +1217,8 @@ paths:
       tags:
         - Favourites
       summary: /favourites/:favourite_id
+      description: Get details of a specific favourite by its ID
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -2068,12 +1240,8 @@ paths:
       tags:
         - Favourites
       summary: /favourites/:favourite_id
+      description: Remove a specific favourite from your account
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -2096,12 +1264,8 @@ paths:
       tags:
         - Votes
       summary: /votes
+      description: Get all votes that you have submitted for images
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -2112,95 +1276,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: integer
-                example: '60'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '119'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '1'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:39:57.354Z'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json
-            Pagination-Count:
-              schema:
-                type: integer
-                example: '1'
-            Pagination-Page:
-              schema:
-                type: integer
-                example: '0'
-            Pagination-Limit:
-              schema:
-                type: integer
-                example: '100'
-            Access-Control-Expose-Headers:
-              schema:
-                type: string
-                example: Pagination-Count, Pagination-Page, Pagination-Limit
-            X-Response-Time:
-              schema:
-                type: string
-                example: 1220ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '139'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:38:57 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
@@ -2217,6 +1292,7 @@ paths:
       tags:
         - Votes
       summary: /votes
+      description: Submit a vote (like or dislike) for a specific image  - with optional sub_id to represent your own user that is performing the action. You can then list /votes using that sub_id as a filter.
       requestBody:
         content:
           application/json:
@@ -2242,79 +1318,6 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Retry-After-Seconds:
-              schema:
-                type: number
-                example: '46.712'
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: '120'
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: '118'
-            RateLimit-Consumed:
-              schema:
-                type: integer
-                example: '2'
-            RateLimit-Reset:
-              schema:
-                type: number
-                example: '2023-10-29T04:30:14.733Z'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 1304ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '106'
-            Date:
-              schema:
-                type: string
-                example: Sun, 29 Oct 2023 04:29:28 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
           content:
             application/json:
               schema:
@@ -2331,12 +1334,8 @@ paths:
       tags:
         - Votes
       summary: /votes/:vote_id
+      description: Get details of a specific vote by its ID
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -2359,12 +1358,8 @@ paths:
       tags:
         - Votes
       summary: /votes/:vote_id
+      description: Delete a specific vote from your account
       parameters:
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
         - name: x-api-key
           in: header
           schema:
@@ -2382,105 +1377,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /webhooks:
-    post:
-      tags:
-        - Webhooks
-      summary: Create Webhook
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                name: Charef
-                url: https://webhook.site/8ff
-                events:
-                  - favourite.created
-      security:
-        - apikeyAuth: []
-      responses:
-        '200':
-          description: OK
-          headers:
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: 'off'
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-XSS-Protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Response-Time:
-              schema:
-                type: string
-                example: 1214ms
-            Content-Length:
-              schema:
-                type: integer
-                example: '475'
-            Date:
-              schema:
-                type: string
-                example: Sat, 03 Dec 2022 22:35:33 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                app:
-                  createdAt: '2022-11-28T12:45:47.677Z'
-                  id: app_2IB0DHxPDmSMYfIO2hyPwCiVsRx
-                  metadata: {}
-                  name: Charef
-                  uid: 1frbda
-                  updatedAt: '2022-11-28T12:45:47.677Z'
-                endpoint:
-                  channels: null
-                  createdAt: '2022-12-03T22:35:32.993Z'
-                  description: ''
-                  disabled: false
-                  filterTypes:
-                    - favourite.created
-                  id: ep_2IQHYL2Cxdkrqo1ukzaKTDViMhx
-                  metadata: null
-                  rateLimit: null
-                  uid: null
-                  updatedAt: '2022-12-03T22:35:32.993Z'
-                  url: https://webhook.site/8ff
-                  version: 1
+ 
   /facts:
     get:
       tags:
@@ -2492,75 +1389,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            x-dns-prefetch-control:
-              schema:
-                type: string
-                example: 'off'
-            x-frame-options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            strict-transport-security:
-              schema:
-                type: string
-                example: max-age=15552000; includeSubDomains
-            x-download-options:
-              schema:
-                type: string
-                example: noopen
-            x-content-type-options:
-              schema:
-                type: string
-                example: nosniff
-            x-xss-protection:
-              schema:
-                type: string
-                example: 1; mode=block
-            vary:
-              schema:
-                type: string
-                example: Origin
-            content-type:
-              schema:
-                type: string
-                example: application/json
-            pagination-count:
-              schema:
-                type: integer
-                example: '711'
-            pagination-page:
-              schema:
-                type: integer
-                example: '0'
-            pagination-limit:
-              schema:
-                type: integer
-                example: '1'
-            access-control-expose-headers:
-              schema:
-                type: string
-                example: Pagination-Count, Pagination-Page, Pagination-Limit
-            x-response-time:
-              schema:
-                type: string
-                example: 182ms
-            X-Cloud-Trace-Context:
-              schema:
-                type: string
-                example: 50ca0e8d0728c4655687fd4cee3b3d7b
-            Date:
-              schema:
-                type: string
-                example: Thu, 19 Oct 2023 07:40:05 GMT
-            Server:
-              schema:
-                type: string
-                example: Google Frontend
-            Content-Length:
-              schema:
-                type: integer
-                example: '205'
           content:
             application/json:
               schema:
@@ -2568,8 +1396,7 @@ paths:
               example:
                 - id: MBM2F
                   fact: >-
-                    Cornish Rex cats have a relatively long lifespan compared to
-                    other cat breeds. They can live up to 15 years or more with
-                    proper care.
-                  breed_id: crex
-                  title: 10. Long Lifespan
+                    Finnish Spitz dogs are known for their distinctive bark, which they use
+                    to alert hunters to the location of game birds in trees.
+                  breed_id: 111
+                  title: Hunting Bark
